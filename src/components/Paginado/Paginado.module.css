@@ -1,0 +1,25 @@
+.container {
+  margin-bottom: 15px;
+}
+.button {
+  margin-right: 3px;
+  background: #00000082;
+  border-color: #ffffff;
+  box-shadow: #ffffff 2px 2px 20px;
+  color: #ffffff;
+  margin-bottom: 3px;
+  font-size: 15px;
+}
+.button:hover {
+  box-shadow: #1904ff 2px 2px 20px;
+  background: #000000;
+}
+.button:focus {
+  background-color: #ffffffc0;
+}
+
+@media screen and (min-width: 800) {
+  .container {
+    margin-bottom: 0px;
+  }
+}

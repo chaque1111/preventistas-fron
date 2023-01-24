@@ -1,0 +1,98 @@
+.container {
+  background: rgb(0, 0, 0);
+  color: rgb(255, 224, 168);
+  display: flex;
+  height: 100vh;
+  border-top-right-radius: 200%;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.containWelcome {
+  margin-top: 3%;
+  text-shadow: rgb(43, 10, 255) 4px 10px 20px;
+  background-color: rgba(0, 0, 0, 0.224);
+  box-shadow: rgba(255, 251, 10, 0.592) 2px 0px 20px;
+  width: 70%;
+  margin-left: 15%;
+}
+
+.containWelcome > h1 {
+  font-size: 50px;
+}
+
+.containSelect {
+  margin-top: 0%;
+
+  text-shadow: rgb(255, 255, 255) 10px 0px 10px;
+}
+
+.containSelect > .selectC {
+  font-size: 20px;
+  background-color: rgba(0, 0, 0, 0.99);
+  color: white;
+  border-color: aliceblue;
+  box-shadow: rgb(191, 164, 164) 12px 2px 20px;
+}
+.containSelect > input {
+  font-size: 20px;
+}
+
+.containSelect > p {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 25px;
+}
+.password {
+  font-size: 20px;
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  box-shadow: rgb(255, 255, 255) 2px 2px 20px;
+}
+
+.submit {
+  margin-top: 20px;
+  font-size: 20px;
+  border-radius: 8px;
+  border: blue 1px solid;
+  color: rgb(255, 255, 255);
+  background-color: blue;
+  box-shadow: rgb(8, 33, 255) 5px 1px 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    margin-top: 10%;
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 90%;
+  }
+  .containWelcome {
+    width: 90%;
+    margin-left: 5%;
+    margin-bottom: 5%;
+  }
+  .containWelcome > h1 {
+    font-size: 30px;
+  }
+  .containSelect {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-items: center;
+  }
+  .containSelect > select {
+    width: fit-content;
+    margin: auto;
+  }
+  .containSelect > p {
+    width: 75%;
+    margin-left: 10%;
+    font-size: 15px;
+  }
+  .containInput {
+    margin-left: 15%;
+    margin-right: 15%;
+    width: 70%;
+  }
+}

@@ -1,0 +1,49 @@
+.search {
+  display: grid;
+  grid-gap: 0px;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: 2, auto;
+  background-color: #ffffffe6;
+  border-style: solid;
+  border-color: #7f7f7fe6;
+  border-width: 1px;
+  width: 250px;
+  height: 36px;
+  border-radius: 20px;
+  box-shadow: #ffffff 2px 3px 20px;
+}
+.input {
+  background-color: rgba(255, 255, 255, 0);
+  grid-column-start: 1;
+  grid-column-end: 2;
+  outline: none;
+  font-size: 17px;
+  height: 33px;
+  width: 150px;
+  border: 3px solid #1100ffe6;
+  border-radius: 5px;
+  margin-right: 1px;
+  border: 0;
+  margin-left: 40px;
+}
+
+.button {
+  margin-right: 20px;
+  width: 35px;
+  background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1674584333/59cfc4d2d3b1936210a5ddc7_yorawu.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  border-style: none;
+  box-shadow: #ffffff 2px 3px 20px;
+}
+
+.button:hover {
+  background-color: rgba(109, 109, 109, 0.721);
+  box-shadow: #0000009e 0px 2px 40px;
+  border-radius: 100%;
+  transition-duration: 2s;
+}
+.button:active {
+  cursor: progress;
+}

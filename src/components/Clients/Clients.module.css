@@ -1,0 +1,137 @@
+.container {
+  width: 100vw;
+  min-height: 1045px;
+}
+.header {
+  height: auto;
+  background: rgba(49, 49, 49, 0.736);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.titleContainer {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+.title {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  text-shadow: #2706ff 2px 2px 10px;
+  width: fit-content;
+  color: white;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 40px;
+}
+
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  margin: 0%;
+
+  grid-column: 2/3;
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+.container {
+  background: linear-gradient(rgb(21, 0, 255), rgb(77, 77, 77));
+  border-top-right-radius: 100%;
+}
+.paginado {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  grid-column: 2/3;
+  grid-row: 3/4;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  grid-column: 3/4;
+}
+.filters > select {
+  background-color: #0000007a;
+  border-color: #ffffff;
+  color: #ffffff;
+  height: 25px;
+  margin: 5px;
+  box-shadow: #ffffff 2px 2px 20px;
+}
+.refresh {
+  box-shadow: #ffffff 2px 2px 20px;
+  border-color: #ffffff;
+  color: #ffffff;
+  background-color: #0000007a;
+  height: 25px;
+}
+.refresh:active {
+  cursor: progress;
+}
+
+.cardsCont {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.singleCard {
+  margin: 20px;
+}
+.link {
+  text-decoration: none;
+}
+
+@media screen and (max-width: 800px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    height: auto;
+  }
+  .singleCard {
+    margin: 20px;
+  }
+  .paginado {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+  }
+  .filters {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .order {
+    grid-template-rows: 1/2;
+  }
+  .title {
+    font-size: 35px;
+  }
+  .filters > select {
+    margin: 0%;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .title {
+    font-size: 30px;
+  }
+}
