@@ -70,8 +70,8 @@ export default function LandingPage() {
           <option value={seller.id}>SELECCIONE UN NOMBRE</option>
           {sellers.length &&
             sellers.map((e) => (
-              <option key={e.vendedor.id} value={e.vendedor.id}>
-                {e.vendedor.name}
+              <option key={e.id} value={e.id}>
+                {e.name}
               </option>
             ))}
         </select>
