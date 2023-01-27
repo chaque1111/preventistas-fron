@@ -15,10 +15,23 @@ export default function () {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Hola {cookie.get("userName")}</h1>
-        <h1>Bienvenido al panel de Preventistas</h1>
+        <div className={styles.containTitle}>
+          <h1 className={styles.panelText}>Panel de Preventistas</h1>
+          <h1 className={styles.welcome}>Hola, {cookie.get("userName")}</h1>
+        </div>
+        <div className={styles.containButton}>
+          <button className={styles.logout} onClick={logout}>
+            <img
+              className={styles.img}
+              src='https://cdn-icons.flaticon.com/svg/3917/3917379.svg?token=exp=1674771107~hmac=93bf5d34a78dc7f14cec74fd31630818'
+              alt=''
+            />{" "}
+            Cerrar Sesión
+          </button>
+        </div>
       </div>
-      <p className={styles.seccionP}>a qué seccion deseas ir?</p>
+
+      <p className={styles.titleSection}>¿A qué seccion deseas ir?</p>
       <div className={styles.containLinks}>
         <Link to='/clients' className={styles.link}>
           <div className={styles.clientes}>
@@ -35,21 +48,6 @@ export default function () {
             <p className={styles.text}>Productos</p>
           </div>
         </Link>
-      </div>
-      <div onClick={(e) => logout()} className={styles.containLogout}>
-        <div class={styles.logout}>
-          <div class={styles.link_wrapper}>
-            <p className={styles.buttonLogout}>cerrar sesion</p>
-            <div class={styles.icon}>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 268.832 268.832'
-              >
-                <path d='M265.17 125.577l-80-80c-4.88-4.88-12.796-4.88-17.677 0-4.882 4.882-4.882 12.796 0 17.678l58.66 58.66H12.5c-6.903 0-12.5 5.598-12.5 12.5 0 6.903 5.597 12.5 12.5 12.5h213.654l-58.66 58.662c-4.88 4.882-4.88 12.796 0 17.678 2.44 2.44 5.64 3.66 8.84 3.66s6.398-1.22 8.84-3.66l79.997-80c4.883-4.882 4.883-12.796 0-17.678z' />
-              </svg>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

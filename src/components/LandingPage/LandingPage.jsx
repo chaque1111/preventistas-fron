@@ -18,9 +18,9 @@ export default function LandingPage() {
 
   const handleSelect = (e) => {
     if (e.target.value != 2) {
-      setMessage("USTED ES UN VENDEDOR, COLOQUE SU CONTRASEÑA");
+      setMessage("Usted es un vendedor, coloque su contraseña");
     } else if (e.target.value == 2) {
-      setMessage("USTED ES UN ADMINISTRADOR, COLOQUE SU CONTRASEÑA");
+      setMessage("Usted es un administrador, coloque su contraseña");
     }
     setSeller({
       ...seller,
@@ -57,17 +57,21 @@ export default function LandingPage() {
   return (
     <div className={Styles.container}>
       <div className={Styles.containWelcome}>
-        <h1 className={Styles.welcome}>Bienvenido </h1>
-        <h1 className={Styles.welcome}> a </h1>
-        <h1 className={Styles.welcome}> PreventistasApp</h1>
+        <h1 className={Styles.welcome}>Bienvenido a</h1>
+        <h1 className={Styles.namePage}> PreventistasApp</h1>
       </div>
       <div className={Styles.containSelect}>
-        <option value='' disabled selected hidden>
-          SELECCIONE UNA CUENTA
-        </option>
-        <p>SELECCIONE UNA CUENTA</p>
-        <select className={Styles.selectC} onChange={(e) => handleSelect(e)}>
-          <option value={seller.id}>SELECCIONE UN NOMBRE</option>
+        <img
+          className={Styles.icon}
+          src='https://res.cloudinary.com/dw83apcj7/image/upload/v1674679610/3917711_ewjkcq.svg'
+          alt=''
+        />
+        <p className={Styles.message}>Seleccionar una cuenta</p>
+
+        <select className={Styles.selectName} onChange={(e) => handleSelect(e)}>
+          <option disabled selected hidden>
+            selecionar...
+          </option>
           {sellers.length &&
             sellers.map((e) => (
               <option key={e.id} value={e.id}>
@@ -79,13 +83,13 @@ export default function LandingPage() {
         {seller.id.length <= 2 ? (
           <div className={Styles.containInput}>
             <input
-              className={Styles.password}
+              className={Styles.inputPass}
               type='password'
               onChange={(e) => handleChanguePassword(e)}
               placeholder='contraseña'
             />{" "}
             <button className={Styles.submit} onClick={(e) => submit(e)}>
-              iniciar sesion
+              Iniciar sesión
             </button>{" "}
           </div>
         ) : (

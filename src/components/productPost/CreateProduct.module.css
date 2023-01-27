@@ -10,7 +10,6 @@
   justify-content: left;
   height: 150px;
   width: 50vw;
-  border-bottom: 3px solid #c1c1c144;
 }
 .containerDatos {
   background: rgba(255, 255, 255, 0.761);
@@ -124,6 +123,8 @@
 .containImage {
   height: 100vh;
   width: 50vw;
+  display: flex;
+  align-items: center;
 }
 .containContenido {
   display: flex;
