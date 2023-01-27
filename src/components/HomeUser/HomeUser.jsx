@@ -23,7 +23,7 @@ export default function () {
           <button className={styles.logout} onClick={logout}>
             <img
               className={styles.img}
-              src='https://cdn-icons.flaticon.com/svg/3917/3917379.svg?token=exp=1674771107~hmac=93bf5d34a78dc7f14cec74fd31630818'
+              src='https://res.cloudinary.com/dw83apcj7/image/upload/v1674792204/3917349_p0mgkg.svg'
               alt=''
             />{" "}
             Cerrar Sesión
