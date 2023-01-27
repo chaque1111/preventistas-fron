@@ -5,7 +5,7 @@
   background-repeat: no-repeat;
   height: 100vh;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex-direction: column;
   align-content: center;
   align-items: center;
@@ -254,7 +254,6 @@
   }
   .productos {
     margin-right: 0px;
-    margin-bottom: 40px;
   }
   .containButton {
     width: 100vw;
