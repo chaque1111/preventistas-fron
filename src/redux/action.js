@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
-const localhost = "https://servidor-preventistas.onrender.com/";
+const localhost = "http://localhost:8080";
 axios.defaults.baseURL = localhost;
 const cookies = new Cookies();
 export function getAllSellers() {

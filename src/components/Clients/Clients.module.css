@@ -1,32 +1,63 @@
 .container {
-  width: 100vw;
-  min-height: 1045px;
+  display: flex;
+
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1674849995/compu_es99hb.jpg");
+  background-attachment: fixed;
+  z-index: 300;
 }
 .header {
-  height: auto;
-  background: rgba(49, 49, 49, 0.736);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  grid-gap: 20px;
+  display: flex;
+  width: 100%;
+  height: 200px;
+  align-items: center;
+  backdrop-filter: blur(150px);
+  position: sticky;
+  top: 0%;
 }
 
-.titleContainer {
-  grid-column-start: 1;
-  grid-column-end: 3;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-content: center;
-}
 .title {
-  grid-column-start: 1;
-  grid-column-end: 3;
-  text-shadow: #2706ff 2px 2px 10px;
-  width: fit-content;
-  color: white;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-size: 40px;
+  font-size: 90px;
+  font-weight: 800;
+  margin-left: 5vw;
+  border-bottom: 3px solid #1b4ab0bf;
+  padding-right: 300px;
+  padding-left: 30px;
+}
+.img {
+  height: 20px;
+  margin-right: 5px;
+}
+.containButton {
+  display: flex;
+  width: 100%;
+  height: 200px;
+  justify-content: end;
+}
+.logout {
+  margin-top: 30px;
+  margin-right: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 150px;
+  font-size: 15px;
+  font-weight: 600;
+  border-style: none;
+  background: rgba(128, 128, 128, 0.486);
+  border-radius: 18px;
+  /* margin-bottom: 40px;
+  margin-right: 70px; */
+  transition-duration: 3s;
+}
+.logout:hover {
+  transition-duration: 1s;
+  box-shadow: black 1px 1px 15px;
+}
+.logout:focus {
+  cursor: progress;
 }
 
 .search {
@@ -36,59 +67,86 @@
   justify-content: center;
   align-content: center;
   margin: 0%;
+}
 
-  grid-column: 2/3;
-  grid-row-start: 2;
-  grid-row-end: 2;
-}
-.container {
-  background: linear-gradient(rgb(21, 0, 255), rgb(77, 77, 77));
-  border-top-right-radius: 100%;
-}
-.paginado {
+.containBody {
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  align-content: center;
-  grid-column: 2/3;
-  grid-row: 3/4;
-}
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  align-content: center;
-  justify-items: center;
-  align-items: center;
-  grid-column: 3/4;
-}
-.filters > select {
-  background-color: #0000007a;
-  border-color: #ffffff;
-  color: #ffffff;
-  height: 25px;
-  margin: 5px;
-  box-shadow: #ffffff 2px 2px 20px;
-}
-.refresh {
-  box-shadow: #ffffff 2px 2px 20px;
-  border-color: #ffffff;
-  color: #ffffff;
-  background-color: #0000007a;
-  height: 25px;
-}
-.refresh:active {
-  cursor: progress;
 }
 
 .cardsCont {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 70vw;
+}
+.containMenu {
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  width: 30vw;
+}
+
+.containOptions {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: fit-content;
+  position: sticky;
+  top: 23vh;
+  align-items: center;
+}
+.text {
+  font-weight: 500;
+}
+.filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filters > select {
+  outline: none;
+  border-style: none;
+  width: 250px;
+  height: 36px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  background-color: rgba(128, 128, 128, 0.749);
+  font-size: 20px;
+  color: rgb(254, 254, 254);
+  padding-left: 20px;
+}
+.iconReload {
+  height: 15px;
+  margin-right: 5px;
+}
+.refresh {
+  margin-top: 15px;
+  display: flex;
   align-items: center;
   justify-content: center;
+  height: 30px;
+  width: 120px;
+  font-size: 15px;
+  font-weight: 600;
+  border-style: none;
+  background: rgba(128, 128, 128, 0.486);
+  border-radius: 18px;
+  /* margin-bottom: 40px;
+  margin-right: 70px; */
+  transition-duration: 3s;
+}
+.refresh:hover {
+  transition-duration: 1s;
+  box-shadow: black 1px 1px 15px;
+}
+.refresh:focus {
+  cursor: progress;
+}
+.refresh:active {
+  cursor: progress;
 }
 
 .singleCard {
@@ -96,6 +154,10 @@
 }
 .link {
   text-decoration: none;
+}
+.containPaginado {
+  margin-top: 30px;
+  width: 400px;
 }
 
 @media screen and (max-width: 800px) {

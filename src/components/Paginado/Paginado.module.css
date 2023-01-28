@@ -2,20 +2,34 @@
   margin-bottom: 15px;
 }
 .button {
-  margin-right: 3px;
-  background: #00000082;
-  border-color: #ffffff;
-  box-shadow: #ffffff 2px 2px 20px;
+  margin-right: 5px;
+  height: 35px;
+  width: 40px;
+  background: #1b4ab0;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 3px;
   font-size: 15px;
+
+  transition-duration: 3s;
+  border-color: #1b4ab0;
 }
 .button:hover {
-  box-shadow: #1904ff 2px 2px 20px;
-  background: #000000;
+  color: rgb(0, 0, 0);
+  box-shadow: #f3f3f5 2px 2px 20px;
+  background: #ffffff;
+  border-style: solid;
+  transition-duration: 1s;
+  border-color: #000000;
 }
 .button:focus {
-  background-color: #ffffffc0;
+  color: rgb(0, 0, 0);
+  box-shadow: #f3f3f5 2px 2px 20px;
+  background: #ffffff;
+  border-style: solid;
+}
+.button:active {
+  cursor: progress;
 }
 
 @media screen and (min-width: 800) {

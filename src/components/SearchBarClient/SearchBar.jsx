@@ -6,28 +6,35 @@ import styles from "../SearchBarClient/SearchBar.module.css";
 export default function ({setPage}) {
   const dispatch = useDispatch();
   const cookies = new Cookies();
-  const [inputName, setInputName] = useState("");
 
-  const handleChangueInput = (e) => {
-    setInputName(e.target.value);
-  };
   const handleSubmit = () => {
-    if (inputName === "") {
+    const input = document.getElementById("text");
+    if (input.value === "") {
       return alert("por favor, ingresa un nombre");
     }
-    dispatch(searchClient(inputName));
-    setInputName("");
+    dispatch(searchClient(input.value));
+    input.value = "";
     setPage(1);
   };
 
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      const input = document.getElementById("text");
+
+      if (event.key === "Enter") {
+        event.preventDefault();
+        handleSubmit();
+      }
+    };
+
+    document.addEventListener("keydown", keyDownHandler);
+  }, []);
   return (
     <div className={styles.search}>
       <input
         id='text'
         className={styles.input}
         type='text'
-        onChange={(e) => handleChangueInput(e)}
-        value={inputName}
         placeholder='Buscar...'
       />
 
