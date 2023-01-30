@@ -32,28 +32,28 @@ export default function () {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>Preventistas App</h1>
-        <div className={styles.search}>
-          <SeachBarProduct />
-        </div>
-        <div className={styles.buttons}>
-          <button onClick={(e) => handleRefresh()}>recargar</button>
-          <Link to={"/productPost"}>
-            <button className={styles.crear}>agregar producto</button>
-          </Link>
+      </div>
+      <div className={styles.search}>
+        <SeachBarProduct />
+      </div>
+      <div className={styles.buttons}>
+        <button onClick={(e) => handleRefresh()}>recargar</button>
+        <Link to={"/productPost"}>
+          <button className={styles.crear}>agregar producto</button>
+        </Link>
 
-          <select>
-            <option disabled selected hidden>
-              Filtrar...
-            </option>
-          </select>
-        </div>
-        <div className={styles.Paginado}>
-          <Paginado
-            products={products.length}
-            productsPerPage={productPerPage}
-            setPage={setPageProduct}
-          />
-        </div>
+        <select>
+          <option disabled selected hidden>
+            Filtrar...
+          </option>
+        </select>
+      </div>
+      <div className={styles.Paginado}>
+        <Paginado
+          products={products.length}
+          productsPerPage={productPerPage}
+          setPage={setPageProduct}
+        />
       </div>
       <div className={styles.cardContain}>
         {productSlice.length ? (

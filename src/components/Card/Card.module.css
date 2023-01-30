@@ -11,8 +11,8 @@
   justify-content: center;
 }
 .cardContainer:hover {
-  background: rgb(0, 0, 0);
-  transition-duration: 2s;
+  background: rgba(255, 255, 255, 0.727);
+  transition-duration: 1s;
 }
 
 .img {
@@ -31,20 +31,18 @@
   font-size: 17px;
   color: rgb(0, 0, 0);
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1400px) {
   .cardContainer {
-    height: 200px;
-    width: 200px;
+    height: 190px;
+    width: 150px;
   }
-
   .img {
-    margin: 20px;
-    height: 120px;
+    height: 70px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   .name {
-    font-size: 15px;
-  }
-  .vendedor {
+    margin: 0%;
     font-size: 15px;
   }
 }

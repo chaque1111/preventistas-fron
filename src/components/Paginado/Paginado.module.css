@@ -31,9 +31,20 @@
 .button:active {
   cursor: progress;
 }
-
+@media screen and (max-width: 1400px) {
+  .button {
+    height: 25px;
+    width: 35px;
+  }
+}
 @media screen and (min-width: 800) {
   .container {
     margin-bottom: 0px;
+  }
+}
+@media screen and (max-width: 650px) {
+  .button {
+    height: 22px;
+    width: 29px;
   }
 }

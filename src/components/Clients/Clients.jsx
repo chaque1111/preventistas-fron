@@ -72,12 +72,13 @@ export default function Clients() {
       <div className={styles.containBody}>
         <div className={styles.containMenu}>
           <div className={styles.containOptions}>
-            <h1 className={styles.text}>Buscar</h1>
-            <div className={styles.search}>
-              <SearchBar setPage={setPage}></SearchBar>{" "}
-            </div>
-            <h1 className={styles.text}>Filtrar</h1>
             <div className={styles.filters}>
+              <h1 className={styles.text}>Buscar</h1>
+              <div className={styles.search}>
+                <SearchBar setPage={setPage}></SearchBar>{" "}
+              </div>
+              <h1 className={styles.text}>Filtrar</h1>
+
               <select
                 onChange={(e) => selectLocalidad(e)}
                 name='Localidad'
