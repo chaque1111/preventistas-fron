@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { useLocation } from "react-router";
 import {Link, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Styles from "../FormTrans/FormTrans.module.css";
@@ -15,20 +16,43 @@ import {
   closeTransaction,
   openTransaction,
   getClientById,
+  getOrderId,
+  getOrderById,
+  putTransac,
 } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 import Cookies from "universal-cookie";
+const Swal = require('sweetalert2')
+
+
+function Validate(input) {
+  let errors = {};
+  if (!input.clienteId) errors.client = "Se requiere elegir un cliente";
+  if (!input.descripcion) errors.products = "Se requiere elegir un producto";
+ 
+  return errors;
+}
 
 export default function NewTransactions() {
   const cookies = new Cookies();
   const dispatch = useDispatch();
   const history = useHistory();
-
+ 
+  const order = useSelector((state)=>state.orderId)
+  
   useEffect(async () => {
     await dispatch(openTransaction());
+    await dispatch((getSellersId(cookies.get("userId"))))
   }, [dispatch]);
 
+
+  const [errors, setErrors] = useState({});
+
+  let data = useLocation();
+  
+
   const [input, setInput] = useState({
+    id: "",
     vendedorId: "",
     clienteId: "",
     fecha: "",
@@ -41,35 +65,77 @@ export default function NewTransactions() {
     orderNumber: "",
   });
 
+  // const sellers = useSelector((state) => state.selectClients)
+  
+  const sellers = cookies.get("userName")
+  console.log(cookies.get("userId"))
   const fecha = getDate();
+  
+  
+  
+  let estado = "";
 
-  function handleSelectSellers(e) {
-    dispatch(getSellersId(e.target.value));
+  data.state.edit === true ?  estado = "Modificar" : estado = "Agregar"  
+
+  
+
+
+  if(data.state.edit === true 
+    && !input.clienteId && !input.descripcion
+    ){
+    (async function editImput(){   
+      const order = await dispatch(getOrderById(data.state.orderId));   
+      console.log(order.payload[0]);
+      let cantidad = order.payload[0].cantidad;
+      let descripcion = order.payload[0].descripcion;
+      let products = [];
+
+      for(let i=0; i<cantidad; i++){
+        products.push(descripcion)
+      }
+
+      setInput({
+        id: order.payload[0].id,
+        vendedorId: order.payload[0].vendedorId,
+        clienteId: order.payload[0].clienteId,
+        fecha: order.payload[0].fecha,
+        products: products,
+        cantidad: cantidad,
+        costo: order.payload[0].costo,
+        subTotal: order.payload[0].subTotal,
+        descripcion: descripcion,
+        inventarioId: order.payload[0].inventarioId,
+        orderNumber: order.payload[0].orderNumber,
+      })
+      document.getElementById("Products").value = order.payload[0].inventarioId;
+      // data.state.edit = false;
+    })()
+  }
+       
+    
+
+  async function handleSelectClients(e) {
+    await dispatch(getClientById(e.target.value));
     setInput({
       ...input,
-      vendedorId: e.target.value,
+      vendedorId: cookies.get("userId"),
+      clienteId: cookies.get("clientId"),
     });
-    dispatch(getClientsBySeller(e.target.value));
+
+    // setErrors(
+    //   Validate({
+    //     ...input,
+    //     vendedorId: sellers.id,
+    //     clienteId: e.target.value,
+    //   })
+    // )
   }
 
-  if (input.vendedorId) {
-    const initValue = "sellerSelect";
-    document.getElementById("Sellers").value = initValue;
-  }
-
-  function handleSelectClients(e) {
-    dispatch(getClientById(e.target.value));
-
-    setInput({
-      ...input,
-      clienteId: e.target.value,
-    });
-  }
-
+ 
   if (input.clienteId) {
-    const initValue = "clientSelect";
-    document.getElementById("Clients").value = initValue;
+    document.getElementById('Clients').style.display = 'none';  
   }
+
 
   if (!input.fecha) {
     (function handleDate() {
@@ -83,12 +149,12 @@ export default function NewTransactions() {
   if (!input.orderNumber) {
     (async function handleOrderNumber() {
       const nroPedido = await dispatch(getOrderNumber());
-      console.log(nroPedido.payload[0].nroPedido);
       setInput({
         ...input,
         orderNumber: nroPedido.payload[0].nroPedido,
       });
     })();
+    
   }
 
   function modifyOrderNumber() {
@@ -134,6 +200,8 @@ export default function NewTransactions() {
         descripcion: "",
       });
 
+      
+
       const idProduct = await dispatch(getProductId(e.target.value));
       const iva = 1 + idProduct.payload.porcentaje / 100;
       const unitCost = parseInt(idProduct.payload.costoBonif);
@@ -148,6 +216,14 @@ export default function NewTransactions() {
         costo: unitCostIva,
         subTotal: unitCostIva * input.cantidad,
       });
+
+      setErrors(
+        Validate({
+              ...input,
+              descripcion: idProduct.payload.descripcion,
+            })
+      )
+
     } else {
       e.target.value = input.descripcion;
       return alert(
@@ -158,7 +234,18 @@ export default function NewTransactions() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await dispatch(postTransac(input));
+
+    setErrors(Validate(input));
+    const errors = Validate(input);
+
+    if(data.state.edit === true){
+      await dispatch(putTransac(input))
+    }
+
+    if(data.state.edit === false){
+      await dispatch(postTransac(input));
+    }
+
     const initValue = "default";
 
     document.getElementById("Products").value = initValue;
@@ -179,7 +266,26 @@ export default function NewTransactions() {
 
   async function handleFinishOrder(e) {
     e.preventDefault();
-    await modifyOrderNumber();
+    Swal.fire({
+      title: 'Confirmación!',
+      text: 'Desea continuar?',
+      icon: 'question',
+      showDenyButton: true,
+      confirmButtonText: 'Guardar',
+      denyButtonText: 'Verificar pedido',
+      denyButtonColor: "#23C41C"
+    }).then((result)=>{
+      if (result.isConfirmed) {
+        modifyOrderNumber();
+        Swal.fire('Pedido cargado!', '', 'success')
+      } else if (result.isDenied) {
+        // Swal.fire('Pedido no cargado', '', 'info')
+       
+        history.push('/order/'+input.orderNumber);
+      //   dispatch(getOrderId(input.orderNumber))
+      }
+    })
+    
     setInput({
       vendedorId: "",
       clienteId: "",
@@ -193,35 +299,57 @@ export default function NewTransactions() {
       orderNumber: "",
     });
 
+    history.push('/user');
     const initValue = "default";
 
-    document.getElementById("Sellers").value =
-      document.getElementById("Clients").value =
+
+
+    // document.getElementById("Sellers").value =
+    //   document.getElementById("Clients").value =
       document.getElementById("Products").value =
         initValue;
 
     // dispatch(closeTransaction());
-    history.push("/");
   }
+
 
   useEffect(() => {
     dispatch(getAllSellers());
     dispatch(getAllProducts());
+    dispatch(getClientsBySeller(cookies.get("userId")));
+
+    // document.addEventListener("DOMContentLoaded", function () { 
+    //   if (data.state.edit === true) { 
+    //     document.getElementById('Finish').style.display = "none"; 
+    //   }
+    //   else{
+    //     document.getElementById('Finish').style.display = "block"; 
+    //   } 
+    // });
   }, [dispatch]);
 
   const products = useSelector((state) => state.allProducts);
 
   const productId = useSelector((state) => state.productId);
 
-  const sellers = useSelector((state) => state.allSellers);
+  // const sellers = useSelector((state) => state.allSellers);
 
-  const clients = useSelector((state) => state.clienstBySeller);
+  // const clients = useSelector((state) => state.selectClients);
 
   const chosenSeller = useSelector((state) => state.seller);
 
   const chosenClient = useSelector((state) => state.client);
-  console.log(chosenClient);
+  
 
+  const dataUser = useSelector((state) => state.user)
+ 
+
+  const clients = useSelector((state) => state.clienstBySeller)
+  
+  console.log(input)
+
+  
+ 
   return (
     <div className={Styles.containMaster}>
       <div className={Styles.contain}>
@@ -229,39 +357,20 @@ export default function NewTransactions() {
           <form className={Styles.form} onSubmit={(e) => handleSubmit(e)}>
             <div className={Styles.masterOrden}>
               <div className={Styles.containOrden}>
+                <div>Vendedor: {sellers}</div>
                 <div>Orden de compra nro: {input.orderNumber}</div>
                 <div>{fecha}</div>
               </div>
             </div>
             <div className={Styles.masterSellClient}>
-              <div className={Styles.containSellClient}>
-                <select
-                  className={Styles.select}
-                  id={"Sellers"}
-                  defaultValue={"default"}
-                  onChange={(e) => handleSelectSellers(e)}
-                >
-                  <option name={"default"} value={"default"} disabled>
-                    Seleccionar Vendedor
-                  </option>
-                  {!input.vendedorId ? (
-                    sellers &&
-                    sellers.map((el) => (
-                      <option value={el.vendedor.id} key={el.vendedor.name}>
-                        {el.vendedor.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option value={"sellerSelect"}>
-                      Vendedor seleccionado
-                    </option>
-                  )}
-                </select>
+              <div className={Styles.containSellClient}>     
+                 
                 <select
                   className={Styles.select}
                   id={"Clients"}
                   defaultValue={"default"}
                   onChange={(e) => handleSelectClients(e)}
+                  disabled={input.clienteId}
                 >
                   <option value={"default"} disabled>
                     Seleccionar cliente
@@ -279,11 +388,15 @@ export default function NewTransactions() {
                 </select>
               </div>
             </div>
+                {errors.client && <h6>{errors.client}</h6>}
 
             <div className={Styles.masterChosenPeople}>
               <div className={Styles.containChosenPeople}>
-                <div className={Styles.chosenSeller}>{chosenSeller}</div>
-                <div className={Styles.chosenClient}>{chosenClient}</div>
+                {/* <div className={Styles.chosenSeller}>{chosenSeller}</div> */}
+                {input.clienteId ?
+                (<div id={"chosenClient"} className={Styles.chosenClient}>Cliente: {cookies.get("clientName")}</div>)
+                :(<div></div>)
+}
               </div>
             </div>
             {/* <div className={Styles.principalProduct}> */}
@@ -327,28 +440,34 @@ export default function NewTransactions() {
                   </div>
                 </div>
                 <div className={Styles.containButtonAdd}>
-                  <div className={Styles.buttonAdd}>
+                  <div id={"add"} className={Styles.buttonAdd}>
                     <input
                       className={Styles.btn}
                       type='submit'
-                      value='Agregar'
-                    />
-                  </div>
+                      value={estado}
+                      
+                      />
+                  </div>                  
                 </div>
               </div>
             </div>
+                      {errors.products && <h6>{errors.products}</h6>}
             {/* </div> */}
           </form>
-          <div className={Styles.containFinishOrder}>
+         {data.state.edit === false ? 
+          (<div className={Styles.containFinishOrder}>
             <div className={Styles.finishOrder}>
               <button
+                id="Finish"
                 className={Styles.btn}
                 onClick={(e) => handleFinishOrder(e)}
               >
                 Finalizar Pedido
               </button>
             </div>
-          </div>
+          </div>)
+        : (null)
+      }
         </div>
       </div>
     </div>
