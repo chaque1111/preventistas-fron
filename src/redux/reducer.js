@@ -74,9 +74,11 @@ function reducer(state = initialState, {type, payload}) {
         clienstBySeller: payload,
         clienstBySellerCopy: payload,
       };
+
     case "GET_CLIENT_BY_ID":
       cookie.set("clientId", payload.id, {path: "/"});
       cookie.set("clientName", payload.name, {path: "/"});
+
       return {
         ...state,
         selectClient: payload,

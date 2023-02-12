@@ -22,13 +22,13 @@ import {
 } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 import Cookies from "universal-cookie";
+
 const Swal = require("sweetalert2");
 
 function Validate(input) {
   let errors = {};
   if (!input.clienteId) errors.client = "Se requiere elegir un cliente";
   if (!input.descripcion) errors.products = "Se requiere elegir un producto";
-
   return errors;
 }
 
@@ -37,7 +37,6 @@ export default function NewTransactions() {
   const dispatch = useDispatch();
   const history = useHistory();
   const order = useSelector((state) => state.orderId);
-
   useEffect(async () => {
     await dispatch(openTransaction());
     await dispatch(getSellersId(cookies.get("userId")));
@@ -321,6 +320,7 @@ export default function NewTransactions() {
                 </select>
               </div>
             </div>
+
             {errors.client && <h6>{errors.client}</h6>}
 
             <div className={Styles.masterChosenPeople}>

@@ -1,5 +1,7 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
+// const localhost =
+//   'http://load-balancer-preventistas-1530951798.us-east-1.elb.amazonaws.com';
 
 const localhost = "http://localhost:8080/";
 
@@ -194,6 +196,20 @@ export function openTransaction() {
 
 export function closeTransaction() {
   return {type: "CLOSE_TRANSACTION"};
+}
+
+export function getOrderByNumber(id) {
+  return async (dispatch) => {
+    const res = await axios("/transacciones/pedido/lista/" + id);
+    return dispatch({type: "GET_ORDER_BY_NUMBER", payload: res.data});
+  };
+}
+
+export function getOrderById(id) {
+  return async (dispatch) => {
+    const res = await axios("/transacciones/pedido/" + id);
+    return dispatch({type: "GET_ORDER_BY_ID", payload: res.data});
+  };
 }
 
 export function getOrderByNumber(id) {
