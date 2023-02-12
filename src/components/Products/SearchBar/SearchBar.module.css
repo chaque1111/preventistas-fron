@@ -1,8 +1,5 @@
 .search {
-  display: grid;
-  grid-gap: 0px;
-  grid-template-columns: repeat(2, auto);
-  grid-template-rows: 2, auto;
+  display: flex;
   background-color: #ffffffe6;
   border-style: solid;
   border-color: #7f7f7fe6;
@@ -14,12 +11,10 @@
 }
 .input {
   background-color: rgba(255, 255, 255, 0);
-  grid-column-start: 1;
-  grid-column-end: 2;
   outline: none;
   font-size: 17px;
   height: 33px;
-  width: 150px;
+  width: 80px;
   border: 3px solid #1100ffe6;
   border-radius: 5px;
   margin-right: 1px;
@@ -35,6 +30,7 @@
   background-size: 20px;
   border-style: none;
   box-shadow: #ffffff 2px 3px 20px;
+  margin-left: 30%;
 }
 
 .button:hover {
@@ -45,4 +41,26 @@
 }
 .button:active {
   cursor: progress;
+}
+@media screen and (max-width: 1400px) {
+  .search {
+    width: 200px;
+  }
+  .input {
+    margin-left: 20px;
+  }
+  .button {
+    margin-left: 20%;
+  }
+}
+@media screen and (max-width: 650px) {
+  .search {
+    width: 140px;
+  }
+  .input {
+    margin-left: 10px;
+  }
+  .button {
+    margin-left: 0px;
+  }
 }

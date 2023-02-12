@@ -15,12 +15,14 @@ import ClientDetail from "./components/ClientDetail/ClientDetail";
 import Products from "./components/Products/Products";
 import ProductDetail from "./components/Products/Detail/ProductDetail";
 import CreateProduct from "./components/productPost/CreateProduct";
+import HomeAdmin from "./components/homeAdmin/homeAdmin";
 
 function App() {
   return (
     <div className='App'>
       <Route exact path='/' component={LandingPage}></Route>
       <Route exact path='/user' component={HomeUser}></Route>
+      <Route exact path='/admin' component={HomeAdmin}></Route>
       <Route exact path='/clients' component={Clients} />
       <Route exact path='/sellers' component={Sellers} />
       <Route exact path='/transactions' component={FormTrans} />

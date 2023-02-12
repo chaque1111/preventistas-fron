@@ -1,7 +1,8 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
-const localhost =
-  "http://load-balancer-preventistas-1530951798.us-east-1.elb.amazonaws.com";
+
+const localhost = "http://localhost:8080/";
+
 axios.defaults.baseURL = localhost;
 const cookies = new Cookies();
 export function getAllSellers() {
@@ -174,10 +175,37 @@ export function postTransac(payload) {
   };
 }
 
+export function putTransac(payload) {
+  return async function (dispatch) {
+    try {
+      const res = await axios.put("/transacciones/pedido/lista/modif", payload);
+      return res;
+    } catch (error) {
+      if (error.response) {
+        return alert(error.response.data);
+      }
+    }
+  };
+}
+
 export function openTransaction() {
   return {type: "OPEN_TRANSACTION"};
 }
 
 export function closeTransaction() {
   return {type: "CLOSE_TRANSACTION"};
+}
+
+export function getOrderByNumber(id) {
+  return async (dispatch) => {
+    const res = await axios("/transacciones/pedido/lista/" + id);
+    return dispatch({type: "GET_ORDER_BY_NUMBER", payload: res.data});
+  };
+}
+
+export function getOrderById(id) {
+  return async (dispatch) => {
+    const res = await axios("/transacciones/pedido/" + id);
+    return dispatch({type: "GET_ORDER_BY_ID", payload: res.data});
+  };
 }

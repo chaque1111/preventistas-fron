@@ -1,6 +1,5 @@
 .container {
   display: flex;
-
   flex-direction: column;
   flex-wrap: nowrap;
   background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1674849995/compu_es99hb.jpg");
@@ -248,6 +247,28 @@
     font-size: 15px;
     height: 25px;
   }
+  .logout {
+    margin-right: 40px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .logout {
+    margin-top: 30px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 140px;
+    font-size: 13px;
+    font-weight: 600;
+    border-style: none;
+    background: rgba(128, 128, 128, 0.486);
+    border-radius: 18px;
+    /* margin-bottom: 40px;
+    margin-right: 70px; */
+    transition-duration: 3s;
+  }
 }
 @media screen and (max-width: 480px) {
   .refresh {
@@ -261,7 +282,7 @@
   }
   .logout {
     margin-top: 30px;
-    margin-right: 40px;
+    margin-right: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -291,9 +312,8 @@
   }
 }
 @media screen and (max-width: 450px) {
-  .filters {
-    margin-right: 0px;
-    margin-left: 20px;
+  .title {
+    font-size: 35px;
   }
 }
 /* @media screen and (max-width: 800px) {

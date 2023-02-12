@@ -31,6 +31,7 @@ export default function Clients() {
     setCurrentPage(number);
   };
   const handleRefresh = () => {
+    setPage(1);
     dispatch(getLocalidades(cookie.get("userId")));
     dispatch(getClientsBySeller(cookie.get("userId")));
     cookie.set("BoolActivo", "", {path: "/"});
@@ -103,7 +104,10 @@ export default function Clients() {
                 <option value={true}>Clientes Activos</option>
                 <option value={false}>Clientes Inactivos</option>
               </select>
-              <button className={styles.refresh}>
+              <button
+                onClick={() => handleRefresh()}
+                className={styles.refresh}
+              >
                 <img
                   className={styles.iconReload}
                   src='https://res.cloudinary.com/dw83apcj7/image/upload/v1674866264/3917765_oub0vd.svg'

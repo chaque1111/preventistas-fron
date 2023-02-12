@@ -28,30 +28,58 @@ export default function LandingPage() {
     });
   };
 
-  const handleChanguePassword = (e) => {
+  const handleChanguePassword = () => {
+    let input = document.getElementById("input");
     setSeller({
       ...seller,
-      password: e.target.value,
+      password: input.value,
     });
   };
 
   const submit = async () => {
     dispatch(refreshClients());
     const loaded = await dispatch(logIng(seller)).then((res) =>
-      res === false ? false : true
+      res === false ? false : res.payload
     );
+
     if (!loaded) {
       return alert("contraseña incorrecta");
     } else {
-      history.push("/user");
+      console.log(loaded);
+      if (!loaded.admin) {
+        history.push("/user");
+      } else {
+        history.push("/admin");
+      }
     }
   };
 
   useEffect(() => {
-    if (cookies.get("userName")) {
-      history.push("/user");
-    }
+    // if (cookies.get("userName")) {
+
+    //   history.push("/user");
+    // }
     dispatch(getAllSellers());
+    const keyDownHandler = async (e) => {
+      if (e.key === "Enter") {
+        let password = document.getElementById("input");
+        let account = document.getElementById("account");
+        let seller = {
+          id: account.value,
+          password: password.value,
+        };
+        dispatch(refreshClients());
+        const loaded = await dispatch(logIng(seller)).then((res) =>
+          res === false ? false : true
+        );
+        if (!loaded) {
+          return alert("contraseña incorrecta");
+        } else {
+          history.push("/user");
+        }
+      }
+    };
+    document.addEventListener("keydown", keyDownHandler);
   }, []);
 
   return (
@@ -68,7 +96,11 @@ export default function LandingPage() {
         />
         <p className={Styles.message}>Seleccionar una cuenta</p>
 
-        <select className={Styles.selectName} onChange={(e) => handleSelect(e)}>
+        <select
+          id='account'
+          className={Styles.selectName}
+          onChange={(e) => handleSelect(e)}
+        >
           <option disabled selected hidden>
             selecionar...
           </option>
@@ -83,6 +115,7 @@ export default function LandingPage() {
         {seller.id.length <= 2 ? (
           <div className={Styles.containInput}>
             <input
+              id='input'
               className={Styles.inputPass}
               type='password'
               onChange={(e) => handleChanguePassword(e)}

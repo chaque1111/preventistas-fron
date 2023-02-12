@@ -13,6 +13,7 @@ const initialState = {
   user: [],
   productId: {},
   orderNumber: "",
+  orderByNumber: [],
   estado: true,
 };
 
@@ -29,6 +30,12 @@ function reducer(state = initialState, {type, payload}) {
       return {
         ...state,
         seller: payload.name,
+      };
+
+    case "GET_ORDER_BY_NUMBER":
+      return {
+        ...state,
+        orderByNumber: payload,
       };
 
     case "FILTER_BY_SELLERS":
@@ -68,6 +75,8 @@ function reducer(state = initialState, {type, payload}) {
         clienstBySellerCopy: payload,
       };
     case "GET_CLIENT_BY_ID":
+      cookie.set("clientId", payload.id, {path: "/"});
+      cookie.set("clientName", payload.name, {path: "/"});
       return {
         ...state,
         selectClient: payload,
