@@ -37,20 +37,15 @@ export default function NewTransactions() {
   const cookies = new Cookies();
   const dispatch = useDispatch();
   const history = useHistory();
- 
   const order = useSelector((state)=>state.orderId)
   
   useEffect(async () => {
     await dispatch(openTransaction());
     await dispatch((getSellersId(cookies.get("userId"))))
   }, [dispatch]);
-
-
-  const [errors, setErrors] = useState({});
-
-  let data = useLocation();
   
-
+  const [errors, setErrors] = useState({});
+  let data = useLocation();
   const [input, setInput] = useState({
     id: "",
     vendedorId: "",
@@ -64,21 +59,14 @@ export default function NewTransactions() {
     inventarioId: "",
     orderNumber: "",
   });
-
-  // const sellers = useSelector((state) => state.selectClients)
   
   const sellers = cookies.get("userName")
-  console.log(cookies.get("userId"))
+  
   const fecha = getDate();
-  
-  
   
   let estado = "";
 
   data.state.edit === true ?  estado = "Modificar" : estado = "Agregar"  
-
-  
-
 
   if(data.state.edit === true 
     && !input.clienteId && !input.descripcion
@@ -108,12 +96,9 @@ export default function NewTransactions() {
         orderNumber: order.payload[0].orderNumber,
       })
       document.getElementById("Products").value = order.payload[0].inventarioId;
-      // data.state.edit = false;
     })()
   }
        
-    
-
   async function handleSelectClients(e) {
     await dispatch(getClientById(e.target.value));
     setInput({
@@ -121,21 +106,11 @@ export default function NewTransactions() {
       vendedorId: cookies.get("userId"),
       clienteId: cookies.get("clientId"),
     });
-
-    // setErrors(
-    //   Validate({
-    //     ...input,
-    //     vendedorId: sellers.id,
-    //     clienteId: e.target.value,
-    //   })
-    // )
   }
 
- 
   if (input.clienteId) {
     document.getElementById('Clients').style.display = 'none';  
   }
-
 
   if (!input.fecha) {
     (function handleDate() {
@@ -200,8 +175,6 @@ export default function NewTransactions() {
         descripcion: "",
       });
 
-      
-
       const idProduct = await dispatch(getProductId(e.target.value));
       const iva = 1 + idProduct.payload.porcentaje / 100;
       const unitCost = parseInt(idProduct.payload.costoBonif);
@@ -240,30 +213,31 @@ export default function NewTransactions() {
 
     if(data.state.edit === true){
       await dispatch(putTransac(input))
+      history.push('/order/'+input.orderNumber);
     }
 
     if(data.state.edit === false){
       await dispatch(postTransac(input));
+      
+      const initValue = "default";
+      
+      document.getElementById("Products").value = initValue;
+      
+      setInput({
+        vendedorId: input.vendedorId,
+        clienteId: input.clienteId,
+        fecha: "",
+        products: [],
+        cantidad: 1,
+        costo: "",
+        subTotal: "",
+        descripcion: "",
+        inventarioId: "",
+        orderNumber: "",
+      });
     }
-
-    const initValue = "default";
-
-    document.getElementById("Products").value = initValue;
-
-    setInput({
-      vendedorId: input.vendedorId,
-      clienteId: input.clienteId,
-      fecha: "",
-      products: [],
-      cantidad: 1,
-      costo: "",
-      subTotal: "",
-      descripcion: "",
-      inventarioId: "",
-      orderNumber: "",
-    });
-  }
-
+    }
+    
   async function handleFinishOrder(e) {
     e.preventDefault();
     Swal.fire({
@@ -279,10 +253,7 @@ export default function NewTransactions() {
         modifyOrderNumber();
         Swal.fire('Pedido cargado!', '', 'success')
       } else if (result.isDenied) {
-        // Swal.fire('Pedido no cargado', '', 'info')
-       
         history.push('/order/'+input.orderNumber);
-      //   dispatch(getOrderId(input.orderNumber))
       }
     })
     
@@ -302,14 +273,9 @@ export default function NewTransactions() {
     history.push('/user');
     const initValue = "default";
 
-
-
-    // document.getElementById("Sellers").value =
-    //   document.getElementById("Clients").value =
       document.getElementById("Products").value =
         initValue;
 
-    // dispatch(closeTransaction());
   }
 
 
@@ -318,37 +284,14 @@ export default function NewTransactions() {
     dispatch(getAllProducts());
     dispatch(getClientsBySeller(cookies.get("userId")));
 
-    // document.addEventListener("DOMContentLoaded", function () { 
-    //   if (data.state.edit === true) { 
-    //     document.getElementById('Finish').style.display = "none"; 
-    //   }
-    //   else{
-    //     document.getElementById('Finish').style.display = "block"; 
-    //   } 
-    // });
   }, [dispatch]);
 
   const products = useSelector((state) => state.allProducts);
-
   const productId = useSelector((state) => state.productId);
-
-  // const sellers = useSelector((state) => state.allSellers);
-
-  // const clients = useSelector((state) => state.selectClients);
-
   const chosenSeller = useSelector((state) => state.seller);
-
   const chosenClient = useSelector((state) => state.client);
-  
-
-  const dataUser = useSelector((state) => state.user)
- 
-
+  const dataUser = useSelector((state) => state.user);
   const clients = useSelector((state) => state.clienstBySeller)
-  
-  console.log(input)
-
-  
  
   return (
     <div className={Styles.containMaster}>
@@ -392,14 +335,12 @@ export default function NewTransactions() {
 
             <div className={Styles.masterChosenPeople}>
               <div className={Styles.containChosenPeople}>
-                {/* <div className={Styles.chosenSeller}>{chosenSeller}</div> */}
                 {input.clienteId ?
                 (<div id={"chosenClient"} className={Styles.chosenClient}>Cliente: {cookies.get("clientName")}</div>)
                 :(<div></div>)
 }
               </div>
             </div>
-            {/* <div className={Styles.principalProduct}> */}
             <div className={Styles.masterCantidad}>
               <div className={Styles.containCantidad}>
                 <select
@@ -444,15 +385,13 @@ export default function NewTransactions() {
                     <input
                       className={Styles.btn}
                       type='submit'
-                      value={estado}
-                      
+                      value={estado}                      
                       />
                   </div>                  
                 </div>
               </div>
             </div>
                       {errors.products && <h6>{errors.products}</h6>}
-            {/* </div> */}
           </form>
          {data.state.edit === false ? 
           (<div className={Styles.containFinishOrder}>

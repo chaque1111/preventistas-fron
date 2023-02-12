@@ -1,23 +1,50 @@
 import React, {useState} from "react";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link,useHistory} from "react-router-dom";
 import Cookies from "universal-cookie";
-import { getOrderByNumber } from "../../redux/action";
+import { changeOrderNumber, getOrderByNumber } from "../../redux/action";
 import OrderCard from "../OrderCard/OrderCard";
+const Swal = require('sweetalert2')
 
 export default function Order(props) {
     const dispatch = useDispatch()
     const cookies = new Cookies();
-
+    const history = useHistory();
+    const orderNumber = parseInt(props.match.params.id);
     useEffect(() => {
-        dispatch(getOrderByNumber(props.match.params.id));
+        dispatch(getOrderByNumber(orderNumber));
       }, [dispatch]);  
     
+
     const order = useSelector((state)=>state.orderByNumber)
     const client = useSelector((state)=>state.client)
     const seller = useSelector((state)=>state.seller)
-    console.log(order)
+   
+
+    function modifyOrderNumber() {
+        const orderId = orderNumber;
+        console.log(orderId)
+        console.log(typeof orderId)
+        dispatch(changeOrderNumber(orderId));
+      }
+
+    async function handleFinishOrder(e) {
+        e.preventDefault();
+        Swal.fire({
+          title: 'Confirmación!',
+          text: 'Desea guardar el pedido?',
+          icon: 'warning',
+          showDenyButton: false,
+          confirmButtonText: 'Ok',         
+        }).then((result)=>{
+          if (result.isConfirmed) {
+            modifyOrderNumber();
+            Swal.fire('Pedido cargado!', '', 'success')
+          } 
+        })
+        history.push('/user');    
+    }
     // const seller = order && order[0].vendedorId;
     return(
         <div>
@@ -29,10 +56,7 @@ export default function Order(props) {
                 order && order.map((e)=>{
                     return(
                         <div key={e.id}>
-                            {/* <div>InventarioId: {e.inventarioId}</div>
-                            <div>Descripción: {e.descripcion}</div>
-                            <div>Cantidad: {e.cantidad}</div>
-                            <div>Fecha: {e.fecha}</div> */}
+                            
                             <Link to={{pathname:"/transactions", state: {edit: true, orderId: e.id }}}>
                                 <OrderCard InventarioId={e.inventarioId}  Descripción={e.descripcion}  Cantidad={e.cantidad}/>
                             </Link>
@@ -41,6 +65,13 @@ export default function Order(props) {
                     )
                 })
             }
+            <div>
+                <button
+                id="Finish"
+                onClick={(e) => handleFinishOrder(e)}>
+                    Confirmar Pedido
+                </button>
+            </div>
             
         </div>
     )

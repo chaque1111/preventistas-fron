@@ -1,7 +1,9 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-const localhost =
-  'http://load-balancer-preventistas-1530951798.us-east-1.elb.amazonaws.com';
+// const localhost =
+//   'http://load-balancer-preventistas-1530951798.us-east-1.elb.amazonaws.com';
+
+const localhost = 'http://localhost:8080/';
 
 axios.defaults.baseURL = localhost;
 const cookies = new Cookies();

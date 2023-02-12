@@ -1,5 +1,4 @@
-import {React, useState, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {React} from "react";
 import {Link, useHistory} from "react-router-dom";
 import Cookies from "universal-cookie";
 import styles from "../HomeUser/HomeUser.module.css";
