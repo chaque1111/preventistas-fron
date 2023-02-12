@@ -30,22 +30,11 @@ export default function Order(props) {
       }
 
     async function handleFinishOrder(e) {
-        e.preventDefault();
-        Swal.fire({
-          title: 'Confirmación!',
-          text: 'Desea guardar el pedido?',
-          icon: 'warning',
-          showDenyButton: false,
-          confirmButtonText: 'Ok',         
-        }).then((result)=>{
-          if (result.isConfirmed) {
-            modifyOrderNumber();
-            Swal.fire('Pedido cargado!', '', 'success')
-          } 
-        })
+        e.preventDefault();       
+        modifyOrderNumber();
+        Swal.fire('Pedido modificado!', '', 'success')
         history.push('/user');    
     }
-    // const seller = order && order[0].vendedorId;
     return(
         <div>
             
