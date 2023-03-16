@@ -37,7 +37,7 @@ export default function () {
             <p className={styles.text}>Clientes</p>
           </div>
         </Link>
-        <Link to={{pathname:"/transactions", state: {edit: false}}} className={styles.link}>
+        <Link to={"/transactions"} className={styles.link}>
           <div className={styles.transaccion}>
             <p className={styles.text}>Transaccion</p>
           </div>

@@ -20,6 +20,7 @@ import {
   getOrderById,
   putTransac,
   cargaPedido,
+  resetPedido,
 } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 import Cookies from "universal-cookie";
@@ -73,40 +74,42 @@ export default function NewTransactions() {
   
   const fecha = getDate();
   
-  let estado = "";
+  // let estado = "";
 
-  data.state.edit === true ?  estado = "Modificar" : estado = "Agregar"  
+  // data.state.edit === true ?  estado = "Modificar" : estado = "Agregar"  
 
-  if(data.state.edit === true 
-    && !input.clienteId && !input.descripcion
-    ){
-    (async function editImput(){   
-      const order = await dispatch(getOrderById(data.state.orderId));   
+  
+
+  // if(data.state.edit === true 
+  //   && !input.clienteId && !input.descripcion
+  //   ){
+  //   (async function editImput(){   
+  //     const order = await dispatch(getOrderById(data.state.orderId));   
       
-      let cantidad = order.payload[0].cantidad;
-      let descripcion = order.payload[0].descripcion;
-      let products = [];
+  //     let cantidad = order.payload[0].cantidad;
+  //     let descripcion = order.payload[0].descripcion;
+  //     let products = [];
 
-      for(let i=0; i<cantidad; i++){
-        products.push(descripcion)
-      }
+  //     for(let i=0; i<cantidad; i++){
+  //       products.push(descripcion)
+  //     }
 
-      setInput({
-        id: order.payload[0].id,
-        vendedorId: order.payload[0].vendedorId,
-        clienteId: order.payload[0].clienteId,
-        fecha: order.payload[0].fecha,
-        products: products,
-        cantidad: cantidad,
-        costo: order.payload[0].costo,
-        subTotal: order.payload[0].subTotal,
-        descripcion: descripcion,
-        inventarioId: order.payload[0].inventarioId,
-        orderNumber: order.payload[0].orderNumber,
-      })
-      document.getElementById("Products").value = order.payload[0].inventarioId;
-    })()
-  }
+  //     setInput({
+  //       id: order.payload[0].id,
+  //       vendedorId: order.payload[0].vendedorId,
+  //       clienteId: order.payload[0].clienteId,
+  //       fecha: order.payload[0].fecha,
+  //       products: products,
+  //       cantidad: cantidad,
+  //       costo: order.payload[0].costo,
+  //       subTotal: order.payload[0].subTotal,
+  //       descripcion: descripcion,
+  //       inventarioId: order.payload[0].inventarioId,
+  //       orderNumber: order.payload[0].orderNumber,
+  //     })
+  //     document.getElementById("Products").value = order.payload[0].inventarioId;
+  //   })()
+  // }
        
   async function handleSelectClients(e) {
     await dispatch(getClientById(e.target.value));
@@ -120,7 +123,7 @@ export default function NewTransactions() {
   if (input.clienteId) {
     document.getElementById('Clients').style.display = 'none';  
   }
-
+  
   if (!input.fecha) {
     (function handleDate() {
       setInput({
@@ -129,6 +132,7 @@ export default function NewTransactions() {
       });
     })();
   }
+
 
   if (!input.orderNumber) {
     (async function handleOrderNumber() {
@@ -145,8 +149,6 @@ export default function NewTransactions() {
     const orderId = input.orderNumber;
     dispatch(changeOrderNumber(orderId));
   }
-
-  
 
   async function handleSelectProducts(e) {
     if (e.target.value !== "Seleccionar producto"
@@ -183,6 +185,9 @@ export default function NewTransactions() {
     // }
   }
 
+  const handleCodigo = () =>{
+
+  }
   const handleCantidad = (e) => {
     if (input.descripcion && e.target.value > 0){
      let cant = e.target.value
@@ -201,82 +206,6 @@ export default function NewTransactions() {
     }
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    setErrors(Validate(input));
-    const errors = Validate(input);
-
-    if(data.state.edit === true){
-      await dispatch(putTransac(input))
-      history.push('/order/'+input.orderNumber);
-    }
-
-    if(data.state.edit === false){
-      await dispatch(postTransac(input));
-      
-      const initValue = "default";
-      
-      document.getElementById("Products").value = initValue;
-      
-      setInput({
-        vendedorId: input.vendedorId,
-        clienteId: input.clienteId,
-        fecha: "",
-        products: [],
-        cantidad: 1,
-        costo: "",
-        subTotal: "",
-        descripcion: "",
-        inventarioId: "",
-        orderNumber: "",
-      });
-    }
-    }
-    
-  async function handleFinishOrder(e) {
-    e.preventDefault();
-    Swal.fire({
-      title: 'Confirmación!',
-      text: 'Desea continuar?',
-      icon: 'question',
-      showDenyButton: true,
-      confirmButtonText: 'Guardar',
-      denyButtonText: 'Verificar pedido',
-      denyButtonColor: "#23C41C"
-    }).then((result)=>{
-      if (result.isConfirmed) {
-        modifyOrderNumber();
-        Swal.fire('Pedido cargado!', '', 'success')
-      } else if (result.isDenied) {
-        history.push('/order/'+input.orderNumber);
-      }
-    })
-    
-    setInput({
-      vendedorId: "",
-      clienteId: "",
-      fecha: "",
-      products: [],
-      cantidad: 1,
-      costo: "",
-      subTotal: "",
-      descripcion: "",
-      inventarioId: "",
-      orderNumber: "",
-    });
-
-    history.push('/user');
-    const initValue = "default";
-
-      document.getElementById("Products").value =
-        initValue;
-
-  }
-
-  const handleChangue = () =>{
-
-  }
 
   const handleCargar = () =>{
     Swal.fire({
@@ -294,7 +223,7 @@ export default function NewTransactions() {
         setInput({
           id: "",
           vendedorId: input.vendedorId,
-          clienteId: input.clienteId,
+          clienteId: "",
           fecha: "",
           cantidad: 1,
           costo: "",
@@ -307,18 +236,30 @@ export default function NewTransactions() {
         modifyOrderNumber();
         pedidos && pedidos.map(async(el)=>{          
           await dispatch(postTransac(el));
-        }) 
-
+        })
         Swal.fire('Pedido cargado!', '', 'success')
+        setTimeout(()=>{dispatch(resetPedido());
+          history.push('/user');},5000)
+
+        // history.push('/user');
+        const initValue = "default";
+        document.getElementById("Products").value = initValue;
+        document.getElementById("cantidad").value = "";
+
+       
       } else if (result.isDenied) {
         dispatch(cargaPedido(input));
+        const initValue = "default";
+
+        document.getElementById("Products").value = initValue;
+        document.getElementById("cantidad").value = "";
 
         setInput({
           id: "",
           vendedorId: input.vendedorId,
           clienteId: input.clienteId,
           fecha: "",
-          cantidad: 1,
+          cantidad: "",
           costo: "",
           subTotal: "",
           descripcion: "",
@@ -451,7 +392,7 @@ export default function NewTransactions() {
             id={"codigo"}
             type='number'
             className={Styles.input}
-            onChange={(e) => handleChangue(e)}
+            onChange={(e) => handleCodigo(e)}
           ></input>
         </div>
         <div className={Styles.input}>
@@ -486,18 +427,16 @@ export default function NewTransactions() {
 
         </div>
         <div className={Styles.input}>
-          <label>Cantidad</label>
-          <input
+          <label>Cantidad</label>          
+            <input
             name='cantidad'
             id={"cantidad"}
             type="number"
-            min="1" 
-           
-            // pattern="^[0-9]+"
-            
+            min="1"
+            placeholder="Ingrese cantidad"
             className={Styles.input}
             onChange={(e)=>handleCantidad(e)}
-          ></input>
+          ></input>          
         </div>
         <div>
           <div className={Styles.cargar}>

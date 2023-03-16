@@ -156,6 +156,12 @@ function reducer(state = initialState, { type, payload }) {
         pedidos: statePedidos,
       };
 
+    case 'RESET_STATE':
+      return {
+        ...state,
+        pedidos: [],
+      };
+
     default:
       return state;
   }

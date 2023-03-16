@@ -213,9 +213,14 @@ export function getOrderById(id) {
 }
 
 export function cargaPedido(payload) {
-  console.log('hi');
   return {
     type: 'UPDATE_STATE',
     payload,
+  };
+}
+
+export function resetPedido() {
+  return {
+    type: 'RESET_STATE',
   };
 }
