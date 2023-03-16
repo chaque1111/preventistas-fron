@@ -44,8 +44,6 @@ export default function NewTransactions() {
   const pedidos = useSelector((state) => state.pedidos);
   console.log(pedidos)
 
-  // const [precioTotal, setPrecioTotal] = useState(null)
-
   const precioTotal = pedidos.reduce((acumulador,actual)=>acumulador + actual.subTotal,0).toFixed(2)
   console.log(precioTotal)
 
@@ -61,7 +59,6 @@ export default function NewTransactions() {
     vendedorId: "",
     clienteId: "",
     fecha: "",
-    // products: [],
     cantidad: 1,
     costo: "",
     subTotal: "",
@@ -74,43 +71,6 @@ export default function NewTransactions() {
   
   const fecha = getDate();
   
-  // let estado = "";
-
-  // data.state.edit === true ?  estado = "Modificar" : estado = "Agregar"  
-
-  
-
-  // if(data.state.edit === true 
-  //   && !input.clienteId && !input.descripcion
-  //   ){
-  //   (async function editImput(){   
-  //     const order = await dispatch(getOrderById(data.state.orderId));   
-      
-  //     let cantidad = order.payload[0].cantidad;
-  //     let descripcion = order.payload[0].descripcion;
-  //     let products = [];
-
-  //     for(let i=0; i<cantidad; i++){
-  //       products.push(descripcion)
-  //     }
-
-  //     setInput({
-  //       id: order.payload[0].id,
-  //       vendedorId: order.payload[0].vendedorId,
-  //       clienteId: order.payload[0].clienteId,
-  //       fecha: order.payload[0].fecha,
-  //       products: products,
-  //       cantidad: cantidad,
-  //       costo: order.payload[0].costo,
-  //       subTotal: order.payload[0].subTotal,
-  //       descripcion: descripcion,
-  //       inventarioId: order.payload[0].inventarioId,
-  //       orderNumber: order.payload[0].orderNumber,
-  //     })
-  //     document.getElementById("Products").value = order.payload[0].inventarioId;
-  //   })()
-  // }
-       
   async function handleSelectClients(e) {
     await dispatch(getClientById(e.target.value));
     setInput({
@@ -268,14 +228,9 @@ export default function NewTransactions() {
     })
       }
     })
-
-
-
-    
   }
  
   
-
   useEffect(() => {
     dispatch(getAllSellers());
     dispatch(getAllProducts());
@@ -396,14 +351,7 @@ export default function NewTransactions() {
           ></input>
         </div>
         <div className={Styles.input}>
-          <label>Descripción</label>
-          {/* <input
-            name='descripcion'
-            id={"descripcion"}
-            type='text'
-            className={Styles.input}
-            onChange={(e) => handleChangue(e)}
-          ></input> */}
+          <label>Descripción</label>       
           <div className={Styles.masterCantidad}>
               <div className={Styles.containCantidad}>
                  <select
@@ -445,7 +393,5 @@ export default function NewTransactions() {
         </div>
       </div>
     </div>
-
-
   );
 }
