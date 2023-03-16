@@ -19,6 +19,7 @@ import {
   getOrderId,
   getOrderById,
   putTransac,
+  cargaPedido,
 } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 import Cookies from "universal-cookie";
@@ -39,6 +40,14 @@ export default function NewTransactions() {
   const history = useHistory();
   const order = useSelector((state)=>state.orderId)
   
+  const pedidos = useSelector((state) => state.pedidos);
+  console.log(pedidos)
+
+  // const [precioTotal, setPrecioTotal] = useState(null)
+
+  const precioTotal = pedidos.reduce((acumulador,actual)=>acumulador + actual.subTotal,0).toFixed(2)
+  console.log(precioTotal)
+
   useEffect(async () => {
     await dispatch(openTransaction());
     await dispatch((getSellersId(cookies.get("userId"))))
@@ -51,7 +60,7 @@ export default function NewTransactions() {
     vendedorId: "",
     clienteId: "",
     fecha: "",
-    products: [],
+    // products: [],
     cantidad: 1,
     costo: "",
     subTotal: "",
@@ -73,7 +82,7 @@ export default function NewTransactions() {
     ){
     (async function editImput(){   
       const order = await dispatch(getOrderById(data.state.orderId));   
-      console.log(order.payload[0]);
+      
       let cantidad = order.payload[0].cantidad;
       let descripcion = order.payload[0].descripcion;
       let products = [];
@@ -137,53 +146,21 @@ export default function NewTransactions() {
     dispatch(changeOrderNumber(orderId));
   }
 
-  function handleAddProd(e) {
-    e.preventDefault();
-    if (input.descripcion) {
-      setInput({
-        ...input,
-        cantidad: input.cantidad + 1,
-        products: [...input.products, input.descripcion],
-        subTotal: input.costo * (input.cantidad + 1),
-      });
-    }
-  }
-
-  function handleSubProd(e) {
-    e.preventDefault();
-    if (input.descripcion && input.cantidad > 1) {
-      input.products.splice(input.products.length - 1, 1);
-      setInput({
-        ...input,
-        cantidad: input.cantidad - 1,
-        products: input.products,
-        subTotal: input.costo * (input.cantidad - 1),
-      });
-    }
-  }
+  
 
   async function handleSelectProducts(e) {
-    if (
-      !input.products.includes(e.target.value) &&
-      e.target.value !== "Seleccionar producto"
+    if (e.target.value !== "Seleccionar producto"
     ) {
-      input.products.splice(0, input.products.length);
-      setInput({
-        ...input,
-        cantidad: 1,
-        products: input.products,
-        descripcion: "",
-      });
-
+      
       const idProduct = await dispatch(getProductId(e.target.value));
       const iva = 1 + idProduct.payload.porcentaje / 100;
       const unitCost = parseInt(idProduct.payload.costoBonif);
       const unitCostIva = unitCost + iva;
 
+
       setInput({
         ...input,
         cantidad: 1,
-        products: [...input.products, idProduct.payload.descripcion],
         descripcion: idProduct.payload.descripcion,
         inventarioId: e.target.value,
         costo: unitCostIva,
@@ -197,11 +174,30 @@ export default function NewTransactions() {
             })
       )
 
-    } else {
-      e.target.value = input.descripcion;
-      return alert(
-        "Ya has añadido este producto a la lista. Seleccione otro producto o continúe completando el formulario."
-      );
+    } 
+    // else {
+    //   e.target.value = input.descripcion;
+    //   return alert(
+    //     "Ya has añadido este producto a la lista. Seleccione otro producto o continúe completando el formulario."
+    //   );
+    // }
+  }
+
+  const handleCantidad = (e) => {
+    if (input.descripcion && e.target.value > 0){
+     let cant = e.target.value
+    
+      if(cant[cant.length-2]=== '.'){
+        cant = cant.split(".").join('');
+        e.target.value = cant
+      }
+      setInput({
+        ...input,
+        cantidad: cant,        
+        subTotal: input.costo * cant,
+        
+      });
+     
     }
   }
 
@@ -278,6 +274,66 @@ export default function NewTransactions() {
 
   }
 
+  const handleChangue = () =>{
+
+  }
+
+  const handleCargar = () =>{
+    Swal.fire({
+      title: 'Confirmación!',
+      text: 'Desea finalizar el pedido?',
+      icon: 'question',
+      showDenyButton: true,
+      confirmButtonText: 'Finalizar pedido',
+      denyButtonText: 'Continuar pedido',
+      denyButtonColor: "#23C41C"
+    }).then(async (result)=>{
+      if (result.isConfirmed) {
+        dispatch(cargaPedido(input));
+
+        setInput({
+          id: "",
+          vendedorId: input.vendedorId,
+          clienteId: input.clienteId,
+          fecha: "",
+          cantidad: 1,
+          costo: "",
+          subTotal: "",
+          descripcion: "",
+          inventarioId: "",
+          orderNumber: "",
+         })
+
+        modifyOrderNumber();
+        pedidos && pedidos.map(async(el)=>{          
+          await dispatch(postTransac(el));
+        }) 
+
+        Swal.fire('Pedido cargado!', '', 'success')
+      } else if (result.isDenied) {
+        dispatch(cargaPedido(input));
+
+        setInput({
+          id: "",
+          vendedorId: input.vendedorId,
+          clienteId: input.clienteId,
+          fecha: "",
+          cantidad: 1,
+          costo: "",
+          subTotal: "",
+          descripcion: "",
+          inventarioId: "",
+          orderNumber: "",
+    })
+      }
+    })
+
+
+
+    
+  }
+ 
+  
 
   useEffect(() => {
     dispatch(getAllSellers());
@@ -292,23 +348,18 @@ export default function NewTransactions() {
   const chosenClient = useSelector((state) => state.client);
   const dataUser = useSelector((state) => state.user);
   const clients = useSelector((state) => state.clienstBySeller)
- 
+  
   return (
-    <div className={Styles.containMaster}>
-      <div className={Styles.contain}>
-        <div className={Styles.description}>
-          <form className={Styles.form} onSubmit={(e) => handleSubmit(e)}>
-            <div className={Styles.masterOrden}>
-              <div className={Styles.containOrden}>
-                <div>Vendedor: {sellers}</div>
-                <div>Orden de compra nro: {input.orderNumber}</div>
-                <div>{fecha}</div>
-              </div>
-            </div>
-            <div className={Styles.masterSellClient}>
-              <div className={Styles.containSellClient}>     
+
+    <div>
+      <h1 className={Styles.TitleForm}>Formulario Transacciones</h1>
+      <div>
+        <div className={Styles.seller_client}>
+        <div>Vendedor: {sellers}</div>
+          <div className={Styles.masterSellClient}>
+             <div className={Styles.containSellClient}>     
                  
-                <select
+                 <select
                   className={Styles.select}
                   id={"Clients"}
                   defaultValue={"default"}
@@ -338,12 +389,83 @@ export default function NewTransactions() {
                 {input.clienteId ?
                 (<div id={"chosenClient"} className={Styles.chosenClient}>Cliente: {cookies.get("clientName")}</div>)
                 :(<div></div>)
-}
+                }
               </div>
             </div>
-            <div className={Styles.masterCantidad}>
+        </div>
+        <div className={Styles.containCeldasState}>
+          <div className={Styles.celdas}>
+            <label>Código</label>
+          </div>
+          <div className={Styles.celdas}>
+            <label>Descripción</label>
+          </div>
+          <div className={Styles.celdas}>
+            <label>Cantidad</label>
+          </div>
+          <div className={Styles.celdas}>
+            <label>Precio Unitario</label>
+          </div>
+          <div className={Styles.celdas}>
+            <label>Subtotal</label>
+          </div>
+        </div>
+         
+
+        {pedidos && pedidos.length
+          ? pedidos.map((el) => (
+              <div key={el.inventarioId} className={Styles.containCeldasState}>
+                <div className={Styles.celdas}>
+                  <div>{el.inventarioId}</div>
+                </div>
+                <div className={Styles.celdas}>
+                  <div>{el.descripcion}</div>
+                </div>
+                <div className={Styles.celdas}>
+                  <div>{el.cantidad}</div>
+                </div>
+                <div className={Styles.celdas}>
+                  <div>{el.costo}</div>
+                </div>
+                <div className={Styles.celdas}>
+                  <div>{el.subTotal}</div>
+                </div>
+
+              </div>
+            ))
+          : ""}
+          <div className={Styles.containPrTotal}>
+          <div className={Styles.celdaTotal}>
+            <label>Total: </label>
+          </div>
+          <div className={Styles.celdas}>
+            <div>{precioTotal}</div>
+          </div>
+          </div>
+      </div>
+      <div className={Styles.containInputs}>
+        <div className={Styles.input}>
+          <label>Código</label>
+          <input
+            name='codigo'
+            id={"codigo"}
+            type='number'
+            className={Styles.input}
+            onChange={(e) => handleChangue(e)}
+          ></input>
+        </div>
+        <div className={Styles.input}>
+          <label>Descripción</label>
+          {/* <input
+            name='descripcion'
+            id={"descripcion"}
+            type='text'
+            className={Styles.input}
+            onChange={(e) => handleChangue(e)}
+          ></input> */}
+          <div className={Styles.masterCantidad}>
               <div className={Styles.containCantidad}>
-                <select
+                 <select
                   className={Styles.select}
                   id={"Products"}
                   defaultValue={"default"}
@@ -359,56 +481,32 @@ export default function NewTransactions() {
                       </option>
                     ))}
                 </select>
-
-                <div>Cantidad: {input.cantidad}</div>
-                <div className={Styles.principalCantidad}>
-                  <div className={Styles.masterButton}>
-                    <div className={Styles.containButton}>
-                      <button
-                        className={Styles.btnCant}
-                        onClick={(e) => handleAddProd(e)}
-                      >
-                        +
-                      </button>
-
-                      <button
-                        className={Styles.btnCant}
-                        onClick={(e) => handleSubProd(e)}
-                      >
-                        -
-                      </button>
-                    </div>
-                  </div>
                 </div>
-                <div className={Styles.containButtonAdd}>
-                  <div id={"add"} className={Styles.buttonAdd}>
-                    <input
-                      className={Styles.btn}
-                      type='submit'
-                      value={estado}                      
-                      />
-                  </div>                  
                 </div>
-              </div>
-            </div>
-                      {errors.products && <h6>{errors.products}</h6>}
-          </form>
-         {data.state.edit === false ? 
-          (<div className={Styles.containFinishOrder}>
-            <div className={Styles.finishOrder}>
-              <button
-                id="Finish"
-                className={Styles.btn}
-                onClick={(e) => handleFinishOrder(e)}
-              >
-                Finalizar Pedido
-              </button>
-            </div>
-          </div>)
-        : (null)
-      }
+
+        </div>
+        <div className={Styles.input}>
+          <label>Cantidad</label>
+          <input
+            name='cantidad'
+            id={"cantidad"}
+            type="number"
+            min="1" 
+           
+            // pattern="^[0-9]+"
+            
+            className={Styles.input}
+            onChange={(e)=>handleCantidad(e)}
+          ></input>
+        </div>
+        <div>
+          <div className={Styles.cargar}>
+            <button onClick={handleCargar}>Cargar</button>
+          </div>
         </div>
       </div>
     </div>
+
+
   );
 }

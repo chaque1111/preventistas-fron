@@ -211,3 +211,11 @@ export function getOrderById(id) {
     return dispatch({ type: 'GET_ORDER_BY_ID', payload: res.data });
   };
 }
+
+export function cargaPedido(payload) {
+  console.log('hi');
+  return {
+    type: 'UPDATE_STATE',
+    payload,
+  };
+}
