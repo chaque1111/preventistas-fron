@@ -38,7 +38,7 @@ function Validate(input) {
 export default function NewTransactions() {
   const cookies = new Cookies();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useHistory()
   const order = useSelector((state)=>state.orderId)
   
   const pedidos = useSelector((state) => state.pedidos);
@@ -71,6 +71,10 @@ export default function NewTransactions() {
   
   const fecha = getDate();
   
+  const handleBack = () => {
+
+  }
+
   async function handleSelectClients(e) {
     await dispatch(getClientById(e.target.value));
     setInput({
@@ -201,7 +205,6 @@ export default function NewTransactions() {
         setTimeout(()=>{dispatch(resetPedido());
           history.push('/user');},5000)
 
-        // history.push('/user');
         const initValue = "default";
         document.getElementById("Products").value = initValue;
         document.getElementById("cantidad").value = "";
@@ -249,6 +252,13 @@ export default function NewTransactions() {
 
     <div>
       <h1 className={Styles.TitleForm}>Formulario Transacciones</h1>
+      
+      <div className={Styles.Buttons}>
+        
+        <button onClick={()=>{history.push('/user')}}>Back</button>
+        
+        <button>Ver Transacciones</button>
+      </div>
       <div>
         <div className={Styles.seller_client}>
         <div>Vendedor: {sellers}</div>
