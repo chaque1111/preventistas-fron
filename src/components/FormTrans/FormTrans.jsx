@@ -41,11 +41,10 @@ export default function NewTransactions() {
   const history = useHistory()
   const order = useSelector((state)=>state.orderId)
   
-  const pedidos = useSelector((state) => state.pedidos);
-  console.log(pedidos)
-
-  const precioTotal = pedidos.reduce((acumulador,actual)=>acumulador + actual.subTotal,0).toFixed(2)
-  console.log(precioTotal)
+  var pedidos = useSelector((state) => state.pedidos);
+  
+  const costoTotal = pedidos.reduce((acumulador,actual)=>acumulador + actual.subTotal,0).toFixed(2)  
+  
 
   useEffect(async () => {
     await dispatch(openTransaction());
@@ -62,18 +61,17 @@ export default function NewTransactions() {
     cantidad: 1,
     costo: "",
     subTotal: "",
+    costoTotalPedido: "",
     descripcion: "",
     inventarioId: "",
     orderNumber: "",
   });
   
+
   const sellers = cookies.get("userName")
   
-  const fecha = getDate();
-  
-  const handleBack = () => {
-
-  }
+  const fecha = getDate(); 
+ 
 
   async function handleSelectClients(e) {
     await dispatch(getClientById(e.target.value));
@@ -108,7 +106,14 @@ export default function NewTransactions() {
     })();
     
   }
-
+  // function chargePriceTotal(){
+  //   const costoTotal = pedidos.reduce((acumulador,actual)=>acumulador + actual.subTotal,0).toFixed(2)  
+  //   // setCostoTotal(costoTotal)
+  //   setInput({
+  //     ...input,
+  //     costoTotalPedido: costoTotal
+  //   })
+  // }
   function modifyOrderNumber() {
     const orderId = input.orderNumber;
     dispatch(changeOrderNumber(orderId));
@@ -122,7 +127,6 @@ export default function NewTransactions() {
       const iva = 1 + idProduct.payload.porcentaje / 100;
       const unitCost = parseInt(idProduct.payload.costoBonif);
       const unitCostIva = unitCost + iva;
-
 
       setInput({
         ...input,
@@ -160,14 +164,20 @@ export default function NewTransactions() {
         cant = cant.split(".").join('');
         e.target.value = cant
       }
+
+      const newCostoTotal = parseFloat(costoTotal) + (input.costo * cant) 
+      console.log(parseFloat(costoTotal))
+      console.log(input.costo * cant)
+      console.log(newCostoTotal.toFixed(2))
       setInput({
         ...input,
         cantidad: cant,        
-        subTotal: input.costo * cant,
-        
+        subTotal: input.costo * cant,   
+        costoTotalPedido: newCostoTotal.toFixed(2)      
       });
-     
     }
+   
+    
   }
 
 
@@ -198,8 +208,9 @@ export default function NewTransactions() {
          })
 
         modifyOrderNumber();
-        pedidos && pedidos.map(async(el)=>{          
-          await dispatch(postTransac(el));
+        pedidos && pedidos.map(async(el,i)=>{ 
+          console.log(el)         
+          await dispatch(postTransac(el,i));
         })
         Swal.fire('Pedido cargado!', '', 'success')
         setTimeout(()=>{dispatch(resetPedido());
@@ -248,6 +259,8 @@ export default function NewTransactions() {
   const dataUser = useSelector((state) => state.user);
   const clients = useSelector((state) => state.clienstBySeller)
   
+  console.log(pedidos)
+
   return (
 
     <div>
@@ -345,7 +358,7 @@ export default function NewTransactions() {
             <label>Total: </label>
           </div>
           <div className={Styles.celdas}>
-            <div>{precioTotal}</div>
+            <div>{costoTotal}</div>
           </div>
           </div>
       </div>
