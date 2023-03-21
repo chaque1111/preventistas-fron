@@ -15,7 +15,6 @@ import ClientDetail from './components/ClientDetail/ClientDetail';
 import Products from './components/Products/Products';
 import ProductDetail from './components/Products/Detail/ProductDetail';
 import CreateProduct from './components/productPost/CreateProduct';
-import Order from './components/Order/Order';
 
 function App() {
   return (
@@ -25,7 +24,6 @@ function App() {
       <Route exact path="/clients" component={Clients} />
       <Route exact path="/sellers" component={Sellers} />
       <Route exact path="/transactions" component={FormTrans} />
-      <Route exact path="/order/:id" component={Order} />
       <Route exact path="/products" component={Products}></Route>
       <Route exact path="/detail/:id" component={ClientDetail} />
       <Route exact path="/product/:id" component={ProductDetail}></Route>
