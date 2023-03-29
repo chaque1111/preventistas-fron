@@ -288,13 +288,14 @@ export default function NewTransactions() {
       <div className={Styles.contain}>
         <div className={Styles.description}>
           <form className={Styles.form} onSubmit={(e) => handleSubmit(e)}>
-            <div className={Styles.masterOrden}>
-              <div className={Styles.containOrden}>
-                <div>Vendedor: {sellers}</div>
-                <div>Orden de compra nro: {input.orderNumber}</div>
-                <div>{fecha}</div>
+            <div className={Styles.containOrden}>
+              <h1>Vendedor: {sellers}</h1>
+              <div className={Styles.containNumberOrder}>
+                <h1>Orden de Compra Número: {input.orderNumber}</h1>
+                <h1>{fecha}</h1>
               </div>
             </div>
+
             <div className={Styles.masterSellClient}>
               <div className={Styles.containSellClient}>
                 <select
@@ -386,21 +387,21 @@ export default function NewTransactions() {
             </div>
             {errors.products && <h6>{errors.products}</h6>}
           </form>
-          {data.state.edit === false ? (
-            <div className={Styles.containFinishOrder}>
-              <div className={Styles.finishOrder}>
-                <button
-                  id='Finish'
-                  className={Styles.btn}
-                  onClick={(e) => handleFinishOrder(e)}
-                >
-                  Finalizar Pedido
-                </button>
-              </div>
-            </div>
-          ) : null}
         </div>
-      </div>
+      </div>{" "}
+      {data.state.edit === false ? (
+        <div className={Styles.containFinishOrder}>
+          <div className={Styles.finishOrder}>
+            <button
+              id='Finish'
+              className={Styles.btn}
+              onClick={(e) => handleFinishOrder(e)}
+            >
+              Finalizar Pedido
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

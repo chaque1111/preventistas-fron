@@ -10,7 +10,7 @@ const initialState = {
   allProducts: [],
   allProductsCopy: [],
   allSellers: [],
-  user: [],
+  user: {},
   productId: {},
   orderNumber: "",
   orderByNumber: [],

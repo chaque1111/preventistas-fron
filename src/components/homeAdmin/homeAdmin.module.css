@@ -1,0 +1,321 @@
+.container {
+  background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1674768779/panel_de_preventistas_gtabvl.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100vw;
+}
+.containTitle {
+  margin-left: 5vw;
+  min-width: max-content;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.486);
+}
+.containButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.panelText {
+  font-size: 70px;
+  color: #1b4bb0;
+  font-weight: 900;
+  margin-bottom: 0px;
+}
+.welcome {
+  color: #1b4bb0;
+  font-size: 50;
+  color: #1b4bb0;
+  margin-top: 0px;
+}
+.img {
+  height: 20px;
+  margin-right: 5px;
+}
+.logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 150px;
+  font-size: 15px;
+  font-weight: 600;
+  border-style: none;
+  background: rgba(128, 128, 128, 0.486);
+  border-radius: 18px;
+  margin-bottom: 40px;
+  margin-right: 70px;
+  transition-duration: 3s;
+}
+.logout:hover {
+  transition-duration: 1s;
+  box-shadow: black 1px 1px 15px;
+}
+.logout:focus {
+  cursor: progress;
+}
+.titleSection {
+  margin-top: 70px;
+  font-weight: 600;
+  font-size: 35px;
+}
+
+.containLinks {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  gap: 5vw;
+}
+
+.clientes {
+  box-shadow: rgb(0, 0, 0) 0px 2px 20px;
+  font-size: 30px;
+  color: rgb(255, 255, 255);
+  background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1674584322/tipos-de-clientes-potenciales-1_lmapse.webp");
+  background-size: cover;
+  background-position: right;
+  height: 300px;
+  width: 340px;
+  height: 300px;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition-duration: 1s;
+
+  border-radius: 20px;
+}
+
+.clientes:hover {
+  transition-duration: 1s;
+  box-shadow: rgb(255, 255, 255) 0px 2px 20px;
+}
+.transaccion {
+  box-shadow: rgb(0, 0, 0) 0px 2px 20px;
+  font-size: 30px;
+  color: white;
+  background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1674584325/Transacciones-comerciales-pixabay_phrez0.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+  width: 340px;
+  grid-area: transaccion;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition-duration: 1s;
+
+  border-radius: 20px;
+}
+.transaccion:hover {
+  transition-duration: 1s;
+  box-shadow: rgb(254, 254, 254) 0px 2px 20px;
+}
+.productos {
+  box-shadow: rgb(0, 0, 0) 0px 2px 20px;
+  font-size: 30px;
+  color: white;
+  background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1674584320/producto-e1572738593909_yukq5p.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+  width: 340px;
+  grid-area: productos;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition-duration: 1s;
+  border-radius: 20px;
+}
+
+.vendedores {
+  box-shadow: rgb(0, 0, 0) 0px 2px 20px;
+  font-size: 30px;
+  color: white;
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+  width: 340px;
+  grid-area: productos;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition-duration: 1s;
+  border-radius: 20px;
+}
+.productos:hover {
+  transition-duration: 1s;
+  box-shadow: rgb(254, 254, 254) 0px 2px 20px;
+}
+
+.text {
+  color: rgb(255, 255, 255);
+
+  background: rgba(0, 0, 0, 0.749);
+
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-shadow: #000000 2px 22px 20px;
+}
+.link {
+  text-decoration: none;
+}
+
+@media screen and (max-width: 1500px) {
+  .clientes {
+    height: 240px;
+    width: 300px;
+  }
+  .transaccion {
+    height: 240px;
+    width: 300px;
+  }
+  .productos {
+    height: 240px;
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .clientes {
+    height: 200px;
+    width: 250px;
+    margin-right: 25px;
+  }
+  .transaccion {
+    height: 200px;
+    width: 250px;
+    margin-right: 25px;
+  }
+  .productos {
+    height: 200px;
+    width: 250px;
+    margin-right: 25px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .containTitle {
+    border-bottom: none;
+    margin: 0px;
+    width: 60vw;
+  }
+  .containButton {
+    justify-content: center;
+    width: 40vw;
+  }
+  .logout {
+    margin: 0px;
+  }
+  .panelText {
+    font-size: 40px;
+  }
+  .welcome {
+    font-size: 30px;
+    height: 50px;
+
+    width: 70%;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .containTitle {
+    margin: 0px;
+  }
+  .welcome {
+    color: #ffffff;
+    font-size: 30px;
+  }
+  .panelText {
+    color: #ffffff;
+    font-size: 40px;
+  }
+  .container {
+    background: none;
+    width: 100vw;
+  }
+  .header {
+    background: #1b4bb0;
+    min-height: 200px;
+    height: 15vh;
+    width: 100vw;
+    flex-direction: column;
+  }
+  .containLinks {
+    flex-direction: column;
+    align-items: center;
+  }
+  .clientes {
+    margin-right: 0px;
+    margin-bottom: 40px;
+  }
+  .transaccion {
+    margin-right: 0px;
+    margin-bottom: 40px;
+  }
+  .productos {
+    margin-right: 0px;
+    margin-bottom: 40px;
+  }
+  .containButton {
+    width: 100vw;
+    justify-content: center;
+  }
+  .logout {
+    margin-right: 30px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .panelText {
+    font-size: 35px;
+  }
+  .welcome {
+    font-size: 25px;
+  }
+  .titleSection {
+    font-size: 25px;
+  }
+}
+@media screen and (max-width: 380px) {
+  .clientes {
+    height: 190px;
+    width: 230px;
+  }
+  .transaccion {
+    height: 190px;
+    width: 230px;
+  }
+  .productos {
+    height: 190px;
+    width: 230px;
+  }
+  .panelText {
+    font-size: 30px;
+  }
+  .welcome {
+    font-size: 20px;
+  }
+  .titleSection {
+    font-size: 23px;
+  }
+}

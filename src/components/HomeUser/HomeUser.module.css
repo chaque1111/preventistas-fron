@@ -113,7 +113,7 @@
   grid-area: transaccion;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   transition-duration: 1s;
   margin-right: 100px;
   border-radius: 20px;
@@ -134,7 +134,7 @@
   grid-area: productos;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   transition-duration: 1s;
   border-radius: 20px;
 }

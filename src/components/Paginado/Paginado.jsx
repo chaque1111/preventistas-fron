@@ -14,7 +14,7 @@ export default function ({clienstPerPage, clients, setPage}) {
             <button
               className={styles.button}
               key={number}
-              onClick={() => setPage(number)}
+              onClick={(e) => setPage(number)}
             >
               {number}
             </button>

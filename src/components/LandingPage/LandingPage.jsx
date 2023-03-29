@@ -92,16 +92,17 @@ export default function LandingPage() {
         <img
           className={Styles.icon}
           src='https://res.cloudinary.com/dw83apcj7/image/upload/v1674679610/3917711_ewjkcq.svg'
-          alt=''
+          alt='not found'
         />
         <p className={Styles.message}>Seleccionar una cuenta</p>
 
         <select
+          defaultValue={"none"}
           id='account'
           className={Styles.selectName}
           onChange={(e) => handleSelect(e)}
         >
-          <option disabled selected hidden>
+          <option value={"none"} disabled selected hidden>
             selecionar...
           </option>
           {sellers.length &&
