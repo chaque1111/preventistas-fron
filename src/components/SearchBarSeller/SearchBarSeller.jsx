@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
-import {searchClient} from "../../redux/action";
+
+import {searchSeller} from "../../redux/action";
 import styles from "../SearchBarClient/SearchBar.module.css";
 export default function ({setPage}) {
   const dispatch = useDispatch();
@@ -10,9 +11,10 @@ export default function ({setPage}) {
     if (input.value === "") {
       return alert("por favor, ingresa un nombre");
     }
-    dispatch(searchClient(input.value));
+    dispatch(searchSeller(input.value));
+
     input.value = "";
-    setPage(1);
+    // setPage(1);
   };
 
   useEffect(() => {

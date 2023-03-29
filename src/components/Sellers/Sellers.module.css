@@ -1,18 +1,335 @@
-.container{
-    
-    flex-direction: column;
-    height: 100%;
-    display: flex;
-    min-height: 100vh;    
-    padding: 0;
-    
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1674849995/compu_es99hb.jpg");
+  background-attachment: fixed;
+  z-index: 300;
+}
+.header {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 200px;
+  align-items: center;
+  backdrop-filter: blur(150px);
+  position: sticky;
+  top: 0%;
 }
 
-.cardsCont{
-    height: 100%;
+.title {
+  font-size: 90px;
+  font-weight: 800;
+  margin-left: 5vw;
+  border-bottom: 3px solid #1b4ab0bf;
+  padding-right: 300px;
+  padding-left: 30px;
+}
+.img {
+  height: 20px;
+  margin-right: 5px;
+}
+.containButton {
+  display: flex;
+  width: 100%;
+  height: 200px;
+  justify-content: end;
+}
+.logout {
+  margin-top: 30px;
+  margin-right: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 150px;
+  font-size: 15px;
+  font-weight: 600;
+  border-style: none;
+  background: rgba(128, 128, 128, 0.486);
+  border-radius: 18px;
+  /* margin-bottom: 40px;
+    margin-right: 70px; */
+  transition-duration: 3s;
+}
+.logout:hover {
+  transition-duration: 1s;
+  box-shadow: black 1px 1px 15px;
+}
+.logout:focus {
+  cursor: progress;
+}
+
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  margin: 0%;
+}
+
+.containBody {
+  display: flex;
+}
+
+.cardsCont {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 70vw;
+}
+.containMenu {
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  width: 30vw;
+}
+
+.containOptions {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: fit-content;
+  position: sticky;
+  top: 23vh;
+  align-items: center;
+}
+.text {
+  font-weight: 500;
+}
+.filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filters > select {
+  outline: none;
+  border-style: none;
+  width: 250px;
+  height: 36px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  background-color: rgba(128, 128, 128, 0.749);
+  font-size: 20px;
+  color: rgb(254, 254, 254);
+  padding-left: 20px;
+}
+.iconReload {
+  height: 15px;
+  margin-right: 5px;
+}
+.refresh {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 120px;
+  font-size: 15px;
+  font-weight: 600;
+  border-style: none;
+  background: rgba(128, 128, 128, 0.486);
+  border-radius: 18px;
+  /* margin-bottom: 40px;
+    margin-right: 70px; */
+  transition-duration: 3s;
+}
+.refresh:hover {
+  transition-duration: 1s;
+  box-shadow: black 1px 1px 15px;
+}
+.refresh:focus {
+  cursor: progress;
+}
+.refresh:active {
+  cursor: progress;
+}
+.addSeller {
+  color: white;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 200px;
+  font-size: 15px;
+  font-weight: 600;
+  border-style: none;
+  background: rgba(37, 85, 12, 0.997);
+  border-radius: 18px;
+  /* margin-bottom: 40px;
+    margin-right: 70px; */
+  transition-duration: 3s;
+}
+
+.singleCard {
+  margin: 20px;
+}
+.link {
+  text-decoration: none;
+}
+.containPaginado {
+  margin-top: 30px;
+  width: 400px;
+}
+@media screen and (max-width: 1400px) {
+  .title {
+    font-size: 70px;
+    padding-right: 200px;
+  }
+  .text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 25px;
+  }
+  .filters > select {
+    width: 200px;
+  }
+  .containPaginado {
+    margin-top: 30px;
+    width: 250px;
+  }
+  .containOptions {
+    position: sticky;
+    top: 27vh;
+  }
+}
+@media screen and (max-height: 820px) {
+  .containOptions {
+    position: sticky;
+    top: 27vh;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .containButton {
+    height: 100px;
+  }
+  .header {
     display: flex;
-    padding:0;
-    margin-top: 5em;
+    height: 100px;
+    position: static;
+  }
+  .title {
+    font-size: 60px;
+    padding-right: 100px;
+  }
+  .containBody {
+    display: flex;
     flex-direction: column;
+  }
+  .containOptions {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  .filters {
+    margin-right: 20px;
+    width: 50%;
+  }
+  .containMenu {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 30px;
+    position: sticky;
+    top: 0px;
+    backdrop-filter: blur(150px);
+    padding-bottom: 5px;
+  }
+  .containPaginado {
+    margin-bottom: 0px;
+  }
+  .cardsCont {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 650px) {
+  .header {
+    display: flex;
+  }
+  .title {
+    font-size: 50px;
+    padding-right: 30px;
+  }
+  .text {
+    font-size: 20px;
+  }
+  .filters > select {
+    width: 140px;
+    font-size: 15px;
+    height: 25px;
+  }
+  .logout {
+    margin-right: 40px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .logout {
+    margin-top: 30px;
+    margin-right: 10px;
+    display: flex;
     align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 140px;
+    font-size: 13px;
+    font-weight: 600;
+    border-style: none;
+    background: rgba(128, 128, 128, 0.486);
+    border-radius: 18px;
+    /* margin-bottom: 40px;
+      margin-right: 70px; */
+    transition-duration: 3s;
+  }
+}
+@media screen and (max-width: 480px) {
+  .refresh {
+    margin: 3px;
+  }
+  .text {
+    margin: 3px;
+  }
+  .header {
+    display: flex;
+  }
+  .logout {
+    margin-top: 30px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 140px;
+    font-size: 13px;
+    font-weight: 600;
+    border-style: none;
+    background: rgba(128, 128, 128, 0.486);
+    border-radius: 18px;
+    /* margin-bottom: 40px;
+      margin-right: 70px; */
+    transition-duration: 3s;
+  }
+  .title {
+    font-size: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+  .text {
+    font-size: 20px;
+  }
+  .filters > select {
+    width: 140px;
+    font-size: 15px;
+    height: 25px;
+  }
+}
+@media screen and (max-width: 450px) {
+  .title {
+    font-size: 35px;
+  }
 }

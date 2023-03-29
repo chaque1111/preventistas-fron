@@ -25,6 +25,11 @@ function reducer(state = initialState, {type, payload}) {
         ...state,
         allSellers: payload,
       };
+    case "SEARCH_SELLER_BY_NAME":
+      return {
+        ...state,
+        allSellers: payload,
+      };
 
     case "GET_SELLERS_ID":
       return {

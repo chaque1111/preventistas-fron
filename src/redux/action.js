@@ -11,8 +11,18 @@ export function getAllSellers() {
   return async (dispatch) => {
     const res = await axios("/vendedores");
 
-    console.log(res.data);
     return dispatch({type: "GET_SELLERS", payload: res.data});
+  };
+}
+export function searchSeller(name) {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/vendedores/" + name);
+      console.log(res.data);
+      dispatch({type: "SEARCH_SELLER_BY_NAME", payload: res.data});
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 
