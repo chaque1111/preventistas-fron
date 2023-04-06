@@ -213,3 +213,16 @@ export function getOrderById(id) {
     return dispatch({type: "GET_ORDER_BY_ID", payload: res.data});
   };
 }
+
+export function cargaPedido(payload) {
+  return {
+    type: 'UPDATE_STATE',
+    payload,
+  };
+}
+
+export function resetPedido() {
+  return {
+    type: 'RESET_STATE',
+  };
+}
