@@ -19,16 +19,18 @@ import {
   getOrderId,
   getOrderById,
   putTransac,
+  cargaPedido,
+  resetPedido,
 } from "../../redux/action";
 import getDate from "../../utils/functions/getDate";
 import Cookies from "universal-cookie";
-
 const Swal = require("sweetalert2");
 
 function Validate(input) {
   let errors = {};
   if (!input.clienteId) errors.client = "Se requiere elegir un cliente";
   if (!input.descripcion) errors.products = "Se requiere elegir un producto";
+
   return errors;
 }
 
@@ -37,6 +39,13 @@ export default function NewTransactions() {
   const dispatch = useDispatch();
   const history = useHistory();
   const order = useSelector((state) => state.orderId);
+
+  var pedidos = useSelector((state) => state.pedidos);
+
+  const costoTotal = pedidos
+    .reduce((acumulador, actual) => acumulador + actual.subTotal, 0)
+    .toFixed(2);
+
   useEffect(async () => {
     await dispatch(openTransaction());
     await dispatch(getSellersId(cookies.get("userId")));
@@ -49,10 +58,10 @@ export default function NewTransactions() {
     vendedorId: "",
     clienteId: "",
     fecha: "",
-    products: [],
     cantidad: 1,
     costo: "",
     subTotal: "",
+    costoTotalPedido: "",
     descripcion: "",
     inventarioId: "",
     orderNumber: "",
@@ -61,39 +70,6 @@ export default function NewTransactions() {
   const sellers = cookies.get("userName");
 
   const fecha = getDate();
-
-  let estado = "";
-
-  data.state.edit === true ? (estado = "Modificar") : (estado = "Agregar");
-
-  if (data.state.edit === true && !input.clienteId && !input.descripcion) {
-    (async function editImput() {
-      const order = await dispatch(getOrderById(data.state.orderId));
-      console.log(order.payload[0]);
-      let cantidad = order.payload[0].cantidad;
-      let descripcion = order.payload[0].descripcion;
-      let products = [];
-
-      for (let i = 0; i < cantidad; i++) {
-        products.push(descripcion);
-      }
-
-      setInput({
-        id: order.payload[0].id,
-        vendedorId: order.payload[0].vendedorId,
-        clienteId: order.payload[0].clienteId,
-        fecha: order.payload[0].fecha,
-        products: products,
-        cantidad: cantidad,
-        costo: order.payload[0].costo,
-        subTotal: order.payload[0].subTotal,
-        descripcion: descripcion,
-        inventarioId: order.payload[0].inventarioId,
-        orderNumber: order.payload[0].orderNumber,
-      });
-      document.getElementById("Products").value = order.payload[0].inventarioId;
-    })();
-  }
 
   async function handleSelectClients(e) {
     await dispatch(getClientById(e.target.value));
@@ -126,50 +102,21 @@ export default function NewTransactions() {
       });
     })();
   }
-
+  // function chargePriceTotal(){
+  //   const costoTotal = pedidos.reduce((acumulador,actual)=>acumulador + actual.subTotal,0).toFixed(2)
+  //   // setCostoTotal(costoTotal)
+  //   setInput({
+  //     ...input,
+  //     costoTotalPedido: costoTotal
+  //   })
+  // }
   function modifyOrderNumber() {
     const orderId = input.orderNumber;
     dispatch(changeOrderNumber(orderId));
   }
 
-  function handleAddProd(e) {
-    e.preventDefault();
-    if (input.descripcion) {
-      setInput({
-        ...input,
-        cantidad: input.cantidad + 1,
-        products: [...input.products, input.descripcion],
-        subTotal: input.costo * (input.cantidad + 1),
-      });
-    }
-  }
-
-  function handleSubProd(e) {
-    e.preventDefault();
-    if (input.descripcion && input.cantidad > 1) {
-      input.products.splice(input.products.length - 1, 1);
-      setInput({
-        ...input,
-        cantidad: input.cantidad - 1,
-        products: input.products,
-        subTotal: input.costo * (input.cantidad - 1),
-      });
-    }
-  }
-
   async function handleSelectProducts(e) {
-    if (
-      !input.products.includes(e.target.value) &&
-      e.target.value !== "Seleccionar producto"
-    ) {
-      input.products.splice(0, input.products.length);
-      setInput({
-        ...input,
-        cantidad: 1,
-        products: input.products,
-        descripcion: "",
-      });
-
+    if (e.target.value !== "Seleccionar producto") {
       const idProduct = await dispatch(getProductId(e.target.value));
       const iva = 1 + idProduct.payload.porcentaje / 100;
       const unitCost = parseInt(idProduct.payload.costoBonif);
@@ -178,7 +125,6 @@ export default function NewTransactions() {
       setInput({
         ...input,
         cantidad: 1,
-        products: [...input.products, idProduct.payload.descripcion],
         descripcion: idProduct.payload.descripcion,
         inventarioId: e.target.value,
         costo: unitCostIva,
@@ -191,84 +137,101 @@ export default function NewTransactions() {
           descripcion: idProduct.payload.descripcion,
         })
       );
-    } else {
-      e.target.value = input.descripcion;
-      return alert(
-        "Ya has añadido este producto a la lista. Seleccione otro producto o continúe completando el formulario."
-      );
     }
+    // else {
+    //   e.target.value = input.descripcion;
+    //   return alert(
+    //     "Ya has añadido este producto a la lista. Seleccione otro producto o continúe completando el formulario."
+    //   );
+    // }
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const handleCodigo = () => {};
+  const handleCantidad = (e) => {
+    if (input.descripcion && e.target.value > 0) {
+      let cant = e.target.value;
 
-    setErrors(Validate(input));
-    const errors = Validate(input);
+      if (cant[cant.length - 2] === ".") {
+        cant = cant.split(".").join("");
+        e.target.value = cant;
+      }
 
-    if (data.state.edit === true) {
-      await dispatch(putTransac(input));
-      history.push("/order/" + input.orderNumber);
-    }
-
-    if (data.state.edit === false) {
-      await dispatch(postTransac(input));
-
-      const initValue = "default";
-
-      document.getElementById("Products").value = initValue;
-
+      const newCostoTotal = parseFloat(costoTotal) + input.costo * cant;
+      console.log(parseFloat(costoTotal));
+      console.log(input.costo * cant);
+      console.log(newCostoTotal.toFixed(2));
       setInput({
-        vendedorId: input.vendedorId,
-        clienteId: input.clienteId,
-        fecha: "",
-        products: [],
-        cantidad: 1,
-        costo: "",
-        subTotal: "",
-        descripcion: "",
-        inventarioId: "",
-        orderNumber: "",
+        ...input,
+        cantidad: cant,
+        subTotal: input.costo * cant,
+        costoTotalPedido: newCostoTotal.toFixed(2),
       });
     }
-  }
+  };
 
-  async function handleFinishOrder(e) {
-    e.preventDefault();
+  const handleCargar = () => {
     Swal.fire({
       title: "Confirmación!",
-      text: "Desea continuar?",
+      text: "Desea finalizar el pedido?",
       icon: "question",
       showDenyButton: true,
-      confirmButtonText: "Guardar",
-      denyButtonText: "Verificar pedido",
+      confirmButtonText: "Finalizar pedido",
+      denyButtonText: "Continuar pedido",
       denyButtonColor: "#23C41C",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
+        dispatch(cargaPedido(input));
+
+        setInput({
+          id: "",
+          vendedorId: input.vendedorId,
+          clienteId: "",
+          fecha: "",
+          cantidad: 1,
+          costo: "",
+          subTotal: "",
+          descripcion: "",
+          inventarioId: "",
+          orderNumber: "",
+        });
+
         modifyOrderNumber();
+        pedidos &&
+          pedidos.map(async (el, i) => {
+            console.log(el);
+            await dispatch(postTransac(el, i));
+          });
         Swal.fire("Pedido cargado!", "", "success");
+        setTimeout(() => {
+          dispatch(resetPedido());
+          history.push("/user");
+        }, 5000);
+
+        const initValue = "default";
+        document.getElementById("Products").value = initValue;
+        document.getElementById("cantidad").value = "";
       } else if (result.isDenied) {
-        history.push("/order/" + input.orderNumber);
+        dispatch(cargaPedido(input));
+        const initValue = "default";
+
+        document.getElementById("Products").value = initValue;
+        document.getElementById("cantidad").value = "";
+
+        setInput({
+          id: "",
+          vendedorId: input.vendedorId,
+          clienteId: input.clienteId,
+          fecha: "",
+          cantidad: "",
+          costo: "",
+          subTotal: "",
+          descripcion: "",
+          inventarioId: "",
+          orderNumber: "",
+        });
       }
     });
-
-    setInput({
-      vendedorId: "",
-      clienteId: "",
-      fecha: "",
-      products: [],
-      cantidad: 1,
-      costo: "",
-      subTotal: "",
-      descripcion: "",
-      inventarioId: "",
-      orderNumber: "",
-    });
-
-    history.push("/user");
-    const initValue = "default";
-
-    document.getElementById("Products").value = initValue;
-  }
+  };
 
   useEffect(() => {
     dispatch(getAllSellers());
@@ -283,125 +246,165 @@ export default function NewTransactions() {
   const dataUser = useSelector((state) => state.user);
   const clients = useSelector((state) => state.clienstBySeller);
 
+  console.log(pedidos);
+
   return (
-    <div className={Styles.containMaster}>
-      <div className={Styles.contain}>
-        <div className={Styles.description}>
-          <form className={Styles.form} onSubmit={(e) => handleSubmit(e)}>
-            <div className={Styles.containOrden}>
-              <h1>Vendedor: {sellers}</h1>
-              <div className={Styles.containNumberOrder}>
-                <h1>Orden de Compra Número: {input.orderNumber}</h1>
-                <h1>{fecha}</h1>
-              </div>
-            </div>
+    <div>
+      <h1 className={Styles.TitleForm}>Formulario Transacciones</h1>
 
-            <div className={Styles.masterSellClient}>
-              <div className={Styles.containSellClient}>
-                <select
-                  className={Styles.select}
-                  id={"Clients"}
-                  defaultValue={"default"}
-                  onChange={(e) => handleSelectClients(e)}
-                  disabled={input.clienteId}
-                >
-                  <option value={"default"} disabled>
-                    Seleccionar cliente
-                  </option>
-                  {!input.clienteId ? (
-                    clients &&
-                    clients.map((el) => (
-                      <option value={el.id} key={el.id}>
-                        {el.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option value={"clientSelect"}>Cliente seleccionado</option>
-                  )}
-                </select>
-              </div>
-            </div>
+      <div className={Styles.Buttons}>
+        <button
+          onClick={() => {
+            history.push("/user");
+          }}
+        >
+          Back
+        </button>
 
-            {errors.client && <h6>{errors.client}</h6>}
-
-            <div className={Styles.masterChosenPeople}>
-              <div className={Styles.containChosenPeople}>
-                {input.clienteId ? (
-                  <div id={"chosenClient"} className={Styles.chosenClient}>
-                    Cliente: {cookies.get("clientName")}
-                  </div>
+        <button>Ver Transacciones</button>
+      </div>
+      <div>
+        <div className={Styles.seller_client}>
+          <div>Vendedor: {sellers}</div>
+          <div className={Styles.masterSellClient}>
+            <div className={Styles.containSellClient}>
+              <select
+                className={Styles.select}
+                id={"Clients"}
+                defaultValue={"default"}
+                onChange={(e) => handleSelectClients(e)}
+                disabled={input.clienteId}
+              >
+                <option value={"default"} disabled>
+                  Seleccionar cliente
+                </option>
+                {!input.clienteId ? (
+                  clients &&
+                  clients.map((el) => (
+                    <option value={el.id} key={el.id}>
+                      {el.name}
+                    </option>
+                  ))
                 ) : (
-                  <div></div>
+                  <option value={"clientSelect"}>Cliente seleccionado</option>
                 )}
-              </div>
+              </select>
             </div>
-            <div className={Styles.masterCantidad}>
-              <div className={Styles.containCantidad}>
-                <select
-                  className={Styles.select}
-                  id={"Products"}
-                  defaultValue={"default"}
-                  onChange={(e) => handleSelectProducts(e)}
-                >
-                  <option value={"default"} disabled>
-                    Seleccionar producto
-                  </option>
-                  {products &&
-                    products.map((el) => (
-                      <option value={el.id} key={el.descripcion}>
-                        {el.descripcion}
-                      </option>
-                    ))}
-                </select>
+          </div>
+          {errors.client && <h6>{errors.client}</h6>}
 
-                <div>Cantidad: {input.cantidad}</div>
-                <div className={Styles.principalCantidad}>
-                  <div className={Styles.masterButton}>
-                    <div className={Styles.containButton}>
-                      <button
-                        className={Styles.btnCant}
-                        onClick={(e) => handleAddProd(e)}
-                      >
-                        +
-                      </button>
-
-                      <button
-                        className={Styles.btnCant}
-                        onClick={(e) => handleSubProd(e)}
-                      >
-                        -
-                      </button>
-                    </div>
-                  </div>
+          <div className={Styles.masterChosenPeople}>
+            <div className={Styles.containChosenPeople}>
+              {input.clienteId ? (
+                <div id={"chosenClient"} className={Styles.chosenClient}>
+                  Cliente: {cookies.get("clientName")}
                 </div>
-                <div className={Styles.containButtonAdd}>
-                  <div id={"add"} className={Styles.buttonAdd}>
-                    <input
-                      className={Styles.btn}
-                      type='submit'
-                      value={estado}
-                    />
-                  </div>
-                </div>
-              </div>
+              ) : (
+                <div></div>
+              )}
             </div>
-            {errors.products && <h6>{errors.products}</h6>}
-          </form>
-        </div>
-      </div>{" "}
-      {data.state.edit === false ? (
-        <div className={Styles.containFinishOrder}>
-          <div className={Styles.finishOrder}>
-            <button
-              id='Finish'
-              className={Styles.btn}
-              onClick={(e) => handleFinishOrder(e)}
-            >
-              Finalizar Pedido
-            </button>
           </div>
         </div>
-      ) : null}
+        <div className={Styles.containCeldasState}>
+          <div className={Styles.celdas}>
+            <label>Código</label>
+          </div>
+          <div className={Styles.celdas}>
+            <label>Descripción</label>
+          </div>
+          <div className={Styles.celdas}>
+            <label>Cantidad</label>
+          </div>
+          <div className={Styles.celdas}>
+            <label>Precio Unitario</label>
+          </div>
+          <div className={Styles.celdas}>
+            <label>Subtotal</label>
+          </div>
+        </div>
+
+        {pedidos && pedidos.length
+          ? pedidos.map((el) => (
+              <div key={el.inventarioId} className={Styles.containCeldasState}>
+                <div className={Styles.celdas}>
+                  <div>{el.inventarioId}</div>
+                </div>
+                <div className={Styles.celdas}>
+                  <div>{el.descripcion}</div>
+                </div>
+                <div className={Styles.celdas}>
+                  <div>{el.cantidad}</div>
+                </div>
+                <div className={Styles.celdas}>
+                  <div>{el.costo}</div>
+                </div>
+                <div className={Styles.celdas}>
+                  <div>{el.subTotal}</div>
+                </div>
+              </div>
+            ))
+          : ""}
+        <div className={Styles.containPrTotal}>
+          <div className={Styles.celdaTotal}>
+            <label>Total: </label>
+          </div>
+          <div className={Styles.celdas}>
+            <div>{costoTotal}</div>
+          </div>
+        </div>
+      </div>
+      <div className={Styles.containInputs}>
+        <div className={Styles.input}>
+          <label>Código</label>
+          <input
+            name='codigo'
+            id={"codigo"}
+            type='number'
+            className={Styles.input}
+            onChange={(e) => handleCodigo(e)}
+          ></input>
+        </div>
+        <div className={Styles.input}>
+          <label>Descripción</label>
+          <div className={Styles.masterCantidad}>
+            <div className={Styles.containCantidad}>
+              <select
+                className={Styles.select}
+                id={"Products"}
+                defaultValue={"default"}
+                onChange={(e) => handleSelectProducts(e)}
+              >
+                <option value={"default"} disabled>
+                  Seleccionar producto
+                </option>
+                {products &&
+                  products.map((el) => (
+                    <option value={el.id} key={el.descripcion}>
+                      {el.descripcion}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className={Styles.input}>
+          <label>Cantidad</label>
+          <input
+            name='cantidad'
+            id={"cantidad"}
+            type='number'
+            min='1'
+            placeholder='Ingrese cantidad'
+            className={Styles.input}
+            onChange={(e) => handleCantidad(e)}
+          ></input>
+        </div>
+        <div>
+          <div className={Styles.cargar}>
+            <button onClick={handleCargar}>Cargar</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

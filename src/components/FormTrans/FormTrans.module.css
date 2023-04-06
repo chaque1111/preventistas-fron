@@ -1,65 +1,79 @@
-.containMaster {
+.Buttons {
   display: flex;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  background: url("https://res.cloudinary.com/dw83apcj7/image/upload/v1675376730/productos_eoaycg.png");
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
 }
-.contain {
-  background: #1b4bb0;
-  display: flex;
-  flex-direction: column;
-}
-.containOrden {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-}
-.containOrden > h1 {
-  font-size: 25px;
-  font-weight: 500;
-  background: #1b4bb0;
-  color: white;
-  padding: 20px;
-  height: 30px;
-  margin-left: 20px;
-}
-.containNumberOrder > h1 {
-  font-size: 25px;
-  font-weight: 500;
-  background: #1b4bb0;
-  color: white;
-  padding: 20px;
-  margin-right: 20px;
-}
-.select {
-  background: #59595aab;
-  width: 200px;
-  height: 30px;
-  border-radius: 14px;
-  color: white;
-  font-weight: 600;
-  margin: 10px;
+.TitleForm {
+  font-size: 60px;
+  color: #1b4bb0;
 }
 
-@media screen and (max-width: 800px) {
-  .containOrden > h1 {
-    font-size: 15px;
-    padding: 10px;
-  }
-  .containNumberOrder > h1 {
-    font-size: 15px;
-    padding: 10px;
-  }
+.seller_client {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 2.5em;
 }
-@media screen and (max-width: 500px) {
-  .containOrden > h1 {
-    font-size: 13px;
-    padding: 10px;
-  }
-  .containNumberOrder > h1 {
-    font-size: 13px;
-    padding: 10px;
-  }
+
+.masterSellClient {
+  padding-left: 8em;
+}
+
+.containCeldasState {
+  display: flex;
+  flex-direction: row;
+}
+
+.containCeldas {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.celdas {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  padding: 0.8em;
+}
+.celdaTotal {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  padding: 0.8em;
+}
+.containInputs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 2.8em;
+}
+
+.containPrTotal {
+  display: flex;
+  flex-direction: row;
+}
+.input {
+  display: flex;
+  flex-direction: row;
+  height: 20px;
+  width: auto;
+}
+
+.casillas {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.inputCeldas {
+  height: 2em;
+}
+
+.cargar {
+  display: flex;
+  padding-left: 5%;
 }

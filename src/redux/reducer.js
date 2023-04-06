@@ -15,6 +15,7 @@ const initialState = {
   orderNumber: "",
   orderByNumber: [],
   estado: true,
+  pedidos: [],
 };
 
 function reducer(state = initialState, {type, payload}) {
@@ -68,11 +69,12 @@ function reducer(state = initialState, {type, payload}) {
         ...state,
         user: payload,
       };
-    case "GET_CLIENTS":
-      return {
-        ...state,
-        allClients: payload,
-      };
+
+    // case 'GET_CLIENTS':
+    //   return {
+    //     ...state,
+    //     allClients: payload,
+    //   };
     case "CLIENTS_BY_SELLER":
       return {
         ...state,
@@ -152,6 +154,20 @@ function reducer(state = initialState, {type, payload}) {
       return {
         ...state,
         localidades: payload,
+      };
+
+    case "UPDATE_STATE":
+      let statePedidos = state.pedidos;
+      statePedidos.push(payload);
+      return {
+        ...state,
+        pedidos: statePedidos,
+      };
+
+    case "RESET_STATE":
+      return {
+        ...state,
+        pedidos: [],
       };
 
     default:
