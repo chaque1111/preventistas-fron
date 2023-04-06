@@ -12,7 +12,6 @@ export default function ({setPage}) {
       return alert("por favor, ingresa un nombre");
     }
     dispatch(searchSeller(input.value));
-
     input.value = "";
     // setPage(1);
   };
