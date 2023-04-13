@@ -7,6 +7,7 @@ const initialState = {
   clienstBySellerCopy: [],
   client: "",
   seller: "",
+  sellerDetail: {},
   allProducts: [],
   allProductsCopy: [],
   allSellers: [],
@@ -37,7 +38,11 @@ function reducer(state = initialState, {type, payload}) {
         ...state,
         seller: payload.name,
       };
-
+    case "GET_SELLER_DETAIL":
+      return {
+        ...state,
+        sellerDetail: payload,
+      };
     case "GET_ORDER_BY_NUMBER":
       return {
         ...state,

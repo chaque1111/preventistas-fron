@@ -32,6 +32,17 @@ export function getSellersId(id) {
     return dispatch({type: "GET_SELLERS_ID", payload: res.data});
   };
 }
+export function getSellerDetail(id) {
+  return async (dispatch) => {
+    console.log(id);
+    const res = await axios("/vendedores/detail/" + id);
+    console.log(res);
+    return dispatch({
+      type: "GET_SELLER_DETAIL",
+      payload: res.data,
+    });
+  };
+}
 
 export function getFilterSellers(payload) {
   return {
@@ -226,13 +237,13 @@ export function getOrderById(id) {
 
 export function cargaPedido(payload) {
   return {
-    type: 'UPDATE_STATE',
+    type: "UPDATE_STATE",
     payload,
   };
 }
 
 export function resetPedido() {
   return {
-    type: 'RESET_STATE',
+    type: "RESET_STATE",
   };
 }

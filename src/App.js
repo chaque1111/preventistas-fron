@@ -16,6 +16,7 @@ import Products from "./components/Products/Products";
 import ProductDetail from "./components/Products/Detail/ProductDetail";
 import CreateProduct from "./components/productPost/CreateProduct";
 import homeAdmin from "./components/homeAdmin/homeAdmin";
+import SellerDetail from "./components/SellerDetail/SellerDetail";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
       <Route exact path='/sellers' component={Sellers} />
       <Route exact path='/transactions' component={FormTrans} />
       <Route exact path='/products' component={Products}></Route>
+      <Route exact path='/seller/:id' component={SellerDetail} />
       <Route exact path='/detail/:id' component={ClientDetail} />
       <Route exact path='/product/:id' component={ProductDetail}></Route>
       <Route exact path='/productPost' component={CreateProduct}></Route>

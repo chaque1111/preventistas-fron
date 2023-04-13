@@ -103,7 +103,7 @@ export default function Sellers() {
             sellers.map((e) => {
               return (
                 <div key={e.id} className={styles.singleCard}>
-                  <Link className={styles.link} to={"/detail/" + e.id}>
+                  <Link className={styles.link} to={"/seller/" + e.id}>
                     <CardSeller
                       id={e.id}
                       name={e.name}
