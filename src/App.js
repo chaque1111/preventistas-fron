@@ -2,7 +2,6 @@ import "./App.css";
 // import { BrowserRouter, Route, Switch } from "react-router-dom";
 import {Route} from "react-router-dom";
 import React from "react";
-
 import Home from "./components/Home/Home.jsx";
 import Nav from "./components/Nav/Nav.jsx";
 import Clients from "./components/Clients/Clients";
@@ -17,6 +16,7 @@ import ProductDetail from "./components/Products/Detail/ProductDetail";
 import CreateProduct from "./components/productPost/CreateProduct";
 import homeAdmin from "./components/homeAdmin/homeAdmin";
 import SellerDetail from "./components/SellerDetail/SellerDetail";
+import Report from "./components/Reports/Report";
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
       <Route exact path='/sellers' component={Sellers} />
       <Route exact path='/transactions' component={FormTrans} />
       <Route exact path='/products' component={Products}></Route>
+      <Route exact path='/report' component={Report}></Route>
       <Route exact path='/seller/:id' component={SellerDetail} />
       <Route exact path='/detail/:id' component={ClientDetail} />
       <Route exact path='/product/:id' component={ProductDetail}></Route>

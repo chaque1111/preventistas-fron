@@ -53,6 +53,11 @@ export default function () {
           <div className={styles.vendedores}>
             <p className={styles.text}>Vendedores</p>
           </div>
+        </Link>{" "}
+        <Link to='/report' className={styles.link}>
+          <div className={styles.vendedores}>
+            <p className={styles.text}>Reporte transaccion</p>
+          </div>
         </Link>
       </div>
     </div>

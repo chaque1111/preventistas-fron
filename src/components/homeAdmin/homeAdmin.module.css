@@ -3,7 +3,7 @@
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
