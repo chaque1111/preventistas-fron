@@ -219,8 +219,22 @@ export function cargaPedido(payload) {
   };
 }
 
+export function totalPedido(payload) {
+  return {
+    type: 'TOTAL_PEDIDO',
+    payload,
+  };
+}
+
 export function resetPedido() {
   return {
     type: 'RESET_STATE',
+  };
+}
+
+export function filterProducts(payload) {
+  return {
+    type: 'FILTER_PRODUCTS',
+    payload,
   };
 }
