@@ -156,10 +156,31 @@ function reducer(state = initialState, { type, payload }) {
         pedidos: statePedidos,
       };
 
+    case 'TOTAL_PEDIDO':
+      let totalPedidos = state.pedidos;
+      totalPedidos.map((t) => (t.costoTotalPedido = payload));
+      return {
+        ...state,
+        pedidos: totalPedidos,
+      };
+
     case 'RESET_STATE':
       return {
         ...state,
         pedidos: [],
+      };
+
+    case 'FILTER_PRODUCTS':
+      const codigo = payload;
+      console.log('codigo: ', codigo);
+      const productos = state.allProducts;
+      let productFilter = productos.filter((el) =>
+        el.id.includes(codigo.toString())
+      );
+      console.log('productos: ', productFilter);
+      return {
+        ...state,
+        allProducts: productFilter,
       };
 
     default:
