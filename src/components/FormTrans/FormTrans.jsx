@@ -133,6 +133,11 @@ export default function NewTransactions() {
         document.getElementById("Products").value = "default";
       }else{
       
+      const newCostoTotal2 = parseFloat(costoTotal) + (input.costo * 1) 
+      console.log(parseFloat(costoTotal))
+      console.log(input.costo * 1)
+      console.log(newCostoTotal2.toFixed(2))
+
 
       setInput({
         ...input,
@@ -140,7 +145,7 @@ export default function NewTransactions() {
         descripcion: idProduct.payload.descripcion,
         inventarioId: e.target.value,
         costo: unitCostIva,
-        // subTotal: unitCostIva * input.cantidad,
+        costoTotalPedido: newCostoTotal2.toFixed(2),
         subTotal: unitCostIva * 1,
       });
 
