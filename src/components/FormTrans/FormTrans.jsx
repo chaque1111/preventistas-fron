@@ -42,7 +42,7 @@ export default function NewTransactions() {
   var pedidos = useSelector((state) => state.pedidos);
 
   const costoTotal = pedidos.reduce((acumulador,actual)=>acumulador + actual.subTotal,0).toFixed(2)    
-
+  console.log("costoTotal: ", costoTotal)
   useEffect(async () => {
     await dispatch(openTransaction());
     await dispatch((getSellersId(cookies.get("userId"))))
@@ -133,10 +133,7 @@ export default function NewTransactions() {
         document.getElementById("Products").value = "default";
       }else{
       
-      const newCostoTotal2 = parseFloat(costoTotal) + (input.costo * 1) 
-      console.log(parseFloat(costoTotal))
-      console.log(input.costo * 1)
-      console.log(newCostoTotal2.toFixed(2))
+      
 
 
       setInput({
@@ -145,7 +142,7 @@ export default function NewTransactions() {
         descripcion: idProduct.payload.descripcion,
         inventarioId: e.target.value,
         costo: unitCostIva,
-        costoTotalPedido: newCostoTotal2.toFixed(2),
+        costoTotalPedido: unitCostIva,
         subTotal: unitCostIva * 1,
       });
 
@@ -219,6 +216,7 @@ export default function NewTransactions() {
     }).then(async (result)=>{
       if (result.isConfirmed) {        
         dispatch(cargaPedido(input));
+        console.log("Costo Total Pedido: ", input.costoTotalPedido)
         dispatch(totalPedido(input.costoTotalPedido))
         setInput({
           id: "",
@@ -283,7 +281,7 @@ export default function NewTransactions() {
   // const chosenClient = useSelector((state) => state.client);
   // const dataUser = useSelector((state) => state.user);
   const clients = useSelector((state) => state.clienstBySeller)
-  
+  console.log("Inputs: ", input)
   return (
 
     <div>
