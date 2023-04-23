@@ -113,9 +113,7 @@ export default function NewTransactions() {
 
   async function handleSelectProducts(e) {
     if (e.target.value !== "Seleccionar producto"
-    ) {    
-      
-      
+    ) {  
       const idProduct = await dispatch(getProductId(e.target.value));
       const iva = 1 + idProduct.payload.porcentaje / 100;
       const unitCost = parseInt(idProduct.payload.costoBonif);
@@ -133,7 +131,7 @@ export default function NewTransactions() {
         document.getElementById("Products").value = "default";
       }else{
       
-      
+        const newCostoTotal2 = parseFloat(costoTotal) + (unitCostIva)
 
 
       setInput({
@@ -142,7 +140,7 @@ export default function NewTransactions() {
         descripcion: idProduct.payload.descripcion,
         inventarioId: e.target.value,
         costo: unitCostIva,
-        costoTotalPedido: unitCostIva,
+        costoTotalPedido: newCostoTotal2.toFixed(2),
         subTotal: unitCostIva * 1,
       });
 
